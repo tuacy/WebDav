@@ -84,8 +84,14 @@
     </content>
     <orderEntry type="jdk" jdkName="Android API 15 Platform" jdkType="Android SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" exported="" name="jackrabbit-webdav-2.10.1" level="project" />
     <orderEntry type="library" exported="" name="support-annotations-22.0.0" level="project" />
+    <orderEntry type="library" exported="" name="slf4j-api-1.7.12" level="project" />
+    <orderEntry type="library" exported="" name="commons-codec-1.9" level="project" />
+    <orderEntry type="library" exported="" name="jcl-over-slf4j-1.7.4" level="project" />
+    <orderEntry type="library" exported="" name="commons-httpclient-3.1" level="project" />
     <orderEntry type="module" module-name="library" exported="" />
     <orderEntry type="module" module-name="commomui" exported="" />
+    <orderEntry type="module" module-name="jackrabbit-webdav" exported="" />
   </component>
 </module>

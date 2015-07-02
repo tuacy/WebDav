@@ -1,0 +1,2 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merger version="3"><dataSet config="main"><source path="E:\GitHub\local\WebDav\WebDAV\jackrabbit-webdav\res"/><source path="E:\GitHub\local\WebDav\WebDAV\jackrabbit-webdav\build\generated\res\rs\debug"/><source path="E:\GitHub\local\WebDav\WebDAV\jackrabbit-webdav\build\generated\res\generated\debug"/></dataSet><dataSet config="debug"><source path="E:\GitHub\local\WebDav\WebDAV\jackrabbit-webdav\src\debug\res"/></dataSet><mergedItems/></merger>

@@ -29,11 +29,11 @@ android {
             jniLibs.srcDirs = ['jniLibs']
         }
     }
-
 }
 
 dependencies {
     compile project(":commomui")
     compile project(':library')
+    compile project(':jackrabbit-webdav')
     compile fileTree(dir: 'libs', include: ['*.jar'])
 }

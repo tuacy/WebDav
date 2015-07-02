@@ -10,6 +10,7 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/commomui" />
+            <option value="$PROJECT_DIR$/jackrabbit-webdav" />
             <option value="$PROJECT_DIR$/library" />
             <option value="$PROJECT_DIR$/mobile" />
           </set>
