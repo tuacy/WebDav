@@ -7,6 +7,7 @@
       <module fileurl="file://$PROJECT_DIR$/jackrabbit-webdav/jackrabbit-webdav.iml" filepath="$PROJECT_DIR$/jackrabbit-webdav/jackrabbit-webdav.iml" />
       <module fileurl="file://$PROJECT_DIR$/library/library.iml" filepath="$PROJECT_DIR$/library/library.iml" />
       <module fileurl="file://$PROJECT_DIR$/mobile/mobile.iml" filepath="$PROJECT_DIR$/mobile/mobile.iml" />
+      <module fileurl="file://$PROJECT_DIR$/template/template.iml" filepath="$PROJECT_DIR$/template/template.iml" />
     </modules>
   </component>
 </project>

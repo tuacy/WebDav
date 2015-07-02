@@ -1,1 +1,1 @@
-include ':mobile', ':library', ':commomui', ':jackrabbit-webdav'
+include ':mobile', ':library', ':commomui', ':jackrabbit-webdav', ':template'
