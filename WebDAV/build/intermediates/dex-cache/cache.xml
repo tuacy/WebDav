@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        jar="E:\github_local\WebDAV\mobile\build\intermediates\exploded-aar\com.android.support\support-v4\22.0.0\libs\internal_impl-22.0.0.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="b5b92f469d515a13d778900f6d50c03d12f35504">
+        <dex dex="E:\github_local\WebDAV\mobile\build\intermediates\pre-dexed\debug\internal_impl-22.0.0-9ed9077a314d3a3db45de3ca7c63b83250d40098.jar" />
+    </item>
+    <item
+        jar="E:\github_local\WebDAV\mobile\build\intermediates\exploded-aar\com.android.support\support-v4\22.0.0\classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="4e86306289ace4aa0cfec44a05ed2b410d36989d">
+        <dex dex="E:\github_local\WebDAV\mobile\build\intermediates\pre-dexed\debug\classes-41c464035ac39db697973db2f6fec70757bb3bc0.jar" />
+    </item>
+    <item
+        jar="E:\github_local\WebDAV\mobile\build\intermediates\exploded-aar\WebDAV\commomui\unspecified\classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="d906af8fda139e42ec45d50248a24aa0b8a3a098">
+        <dex dex="E:\github_local\WebDAV\mobile\build\intermediates\pre-dexed\debug\classes-86e75095b419d1167728d924ef4e5b46e8dea950.jar" />
+    </item>
+    <item
+        jar="E:\github_local\WebDAV\mobile\build\intermediates\exploded-aar\WebDAV\library\unspecified\classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="7ca9e98bf1fd6399e43c73b114ab3c67639dbae4">
+        <dex dex="E:\github_local\WebDAV\mobile\build\intermediates\pre-dexed\debug\classes-b9a5d8d970ccd70123c64991f739bf90fac69e52.jar" />
+    </item>
+    <item
+        jar="D:\job\android\android-sdk\extras\android\m2repository\com\android\support\support-annotations\22.0.0\support-annotations-22.0.0.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="685d0b2c590447e85284ed84712cb363ba04eff8">
+        <dex dex="E:\github_local\WebDAV\mobile\build\intermediates\pre-dexed\debug\support-annotations-22.0.0-9c8b3b854fb10acbe210c9a659f1938238ce2ff8.jar" />
+    </item>
+
+</items>

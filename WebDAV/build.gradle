@@ -1,0 +1,51 @@
+import java.util.regex.Matcher
+import java.util.regex.Pattern
+
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
+
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:1.1.0'
+    }
+}
+
+allprojects {
+    repositories {
+        mavenCentral()
+    }
+}
+
+
+ext {
+    compileSdkVersion = 15
+    buildToolsVersion = "21.1.2"
+
+    minSdkVersion = 15
+    targetSdkVersion = 15
+
+    versionCode = 1
+    versionNamePrefix = "1.0"
+    versionDate = getDate()
+    versionName = "1"//computeVersionName()
+}
+
+//def computeVersionName() {
+//    def proc = "svnversion -c".execute();
+//    proc.waitFor();
+//    def version = proc.in.text;
+//    Pattern p = Pattern.compile("(\\d+\\:)?(\\d+)\\D?");
+//    Matcher m = p.matcher(version);
+//    if (m.find()) {
+//        version = m.group(m.groupCount());
+//    }
+//    return project.versionNamePrefix + '.' + version + '_' + project.versionDate;
+//}
+
+def getDate() {
+    def date = new Date()
+    def formattedDate = date.format('yyyyMMdd')
+    return formattedDate
+}
