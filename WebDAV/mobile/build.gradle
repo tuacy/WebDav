@@ -37,4 +37,5 @@ dependencies {
     compile project(':jackrabbit-webdav')
     compile fileTree(dir: 'jniLibs', include: ['*.jar'])
     compile 'de.greenrobot:greendao:1.3.7'
+    compile 'de.greenrobot:eventbus:2.4.0'
 }

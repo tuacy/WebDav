@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- text size -->
+    <dimen name="text_size_super">75sp</dimen>
+    <dimen name="text_size_huge">50sp</dimen>
+    <dimen name="text_size_big">20sp</dimen>
+    <dimen name="text_size_normal">18sp</dimen>
+    <dimen name="text_size_small">16sp</dimen>
+    <dimen name="text_size_little">14sp</dimen>
+    <dimen name="text_size_tiny">12sp</dimen>
+    <dimen name="text_size_nano">10sp</dimen>
+
+    <!-- margin -->
+    <dimen name="margin_huge_3">84dp</dimen>
+    <dimen name="margin_huge_2">80dp</dimen>
+    <dimen name="margin_huge_1">76dp</dimen>
+    <dimen name="margin_big_3">72dp</dimen>
+    <dimen name="margin_big_2">68dp</dimen>
+    <dimen name="margin_big_1">64dp</dimen>
+    <dimen name="margin_normal_3">60dp</dimen>
+    <dimen name="margin_normal_2">56dp</dimen>
+    <dimen name="margin_normal_1">52dp</dimen>
+    <dimen name="margin_small_3">48dp</dimen>
+    <dimen name="margin_small_2">44dp</dimen>
+    <dimen name="margin_small_1">40dp</dimen>
+    <dimen name="margin_little_3">36dp</dimen>
+    <dimen name="margin_little_2">32dp</dimen>
+    <dimen name="margin_little_1">28dp</dimen>
+    <dimen name="margin_mini_3">24dp</dimen>
+    <dimen name="margin_mini_2">20dp</dimen>
+    <dimen name="margin_mini_1">16dp</dimen>
+    <dimen name="margin_tiny_3">12dp</dimen>
+    <dimen name="margin_tiny_2">8dp</dimen>
+    <dimen name="margin_tiny_1">4dp</dimen>
+
+    <!-- padding module -->
+    <dimen name="padding_huge_3">42dp</dimen>
+    <dimen name="padding_huge_2">40dp</dimen>
+    <dimen name="padding_huge_1">38dp</dimen>
+    <dimen name="padding_big_3">36dp</dimen>
+    <dimen name="padding_big_2">34dp</dimen>
+    <dimen name="padding_big_1">32dp</dimen>
+    <dimen name="padding_normal_3">30dp</dimen>
+    <dimen name="padding_normal_2">28dp</dimen>
+    <dimen name="padding_normal_1">26dp</dimen>
+    <dimen name="padding_small_3">24dp</dimen>
+    <dimen name="padding_small_2">22dp</dimen>
+    <dimen name="padding_small_1">20dp</dimen>
+    <dimen name="padding_little_3">18dp</dimen>
+    <dimen name="padding_little_2">16dp</dimen>
+    <dimen name="padding_little_1">14dp</dimen>
+    <dimen name="padding_mini_3">12dp</dimen>
+    <dimen name="padding_mini_2">10dp</dimen>
+    <dimen name="padding_mini_1">8dp</dimen>
+    <dimen name="padding_tiny_3">6dp</dimen>
+    <dimen name="padding_tiny_2">4dp</dimen>
+    <dimen name="padding_tiny_1">2dp</dimen>
+    <dimen name="padding_minus_tiny_1">-2dp</dimen>
+    <dimen name="padding_minus_tiny_2">-4dp</dimen>
+    <dimen name="padding_minus_tiny_3">-6dp</dimen>
+    <dimen name="padding_minus_mini_1">-8dp</dimen>
+    <dimen name="padding_minus_mini_2">-10dp</dimen>
+    <dimen name="padding_minus_mini_3">-12dp</dimen>
+    <dimen name="padding_minus_little_1">-14dp</dimen>
+    <dimen name="padding_minus_little_2">-16dp</dimen>
+    <dimen name="padding_minus_little_3">-18dp</dimen>
+</resources>
