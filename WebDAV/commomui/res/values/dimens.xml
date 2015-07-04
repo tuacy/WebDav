@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Switch -->
+    <dimen name="switch_btn_thumb_text_padding">12dp</dimen>
+    <dimen name="switch_btn_min_width">55dp</dimen>
+    <dimen name="switch_btn_padding">16dp</dimen>
+    <dimen name="switch_btn_txt_size">13sp</dimen>
+
+    <!-- CommonDialog -->
+    <dimen name="common_dialog_title_text">20sp</dimen>
+    <dimen name="common_dialog_button_text">18sp</dimen>
+    <dimen name="common_dialog_content_layout_padding">16dp</dimen>
+    <dimen name="common_dialog_button_layout_padding">10dp</dimen>
+    <dimen name="common_dialog_button_margin">16dp</dimen>
+
+</resources>

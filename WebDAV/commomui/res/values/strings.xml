@@ -1,3 +1,15 @@
 <resources>
-    <string name="app_name">commomui</string>
+
+    <string name="app_name">common_ui</string>
+    
+    <!-- Switch -->
+    <string name="switch_btn_capital_on">On</string>
+    <string name="switch_btn_capital_off">Off</string>
+
+    
+    <!-- CommonDialog -->
+    <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
+    <string name="confirm">Confirm</string>
+
 </resources>

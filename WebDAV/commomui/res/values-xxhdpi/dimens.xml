@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- TimePicker -->
+    <dimen name="time_picker_wheel_view_width">60dp</dimen>
+    <dimen name="time_picker_margin_left_right">14dp</dimen>
+    <dimen name="time_picker_txt_padding_top_bottom">14dp</dimen>
+    <dimen name="time_picker_txt_size">20sp</dimen>
+    
+</resources>

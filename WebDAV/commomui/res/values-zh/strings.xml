@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Switch -->
+    <string name="switch_btn_capital_on">开</string>
+    <string name="switch_btn_capital_off">关</string>
+
+    <!-- TimePicker -->
+    <string name="am">上午</string>
+    <string name="pm">下午</string>
+
+    <!-- CommonDialog -->
+    <string name="ok">确定</string>
+    <string name="cancel">取消</string>
+    <string name="confirm">确定</string>
+    
+</resources>

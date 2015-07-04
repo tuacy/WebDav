@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    
+    <!-- Switch -->
+    <color name="switch_btn_txt">#FF000000</color>
+    <color name="switch_btn_on_text">#FF326301</color>
+    <color name="switch_btn_off_text">#FF222222</color>
+    
+    <!-- CommonDialog -->
+    <color name="common_dialog_title_text">#C8000000</color>
+    <color name="common_dialog_button_text_color">#96000000</color>
+    
+</resources>

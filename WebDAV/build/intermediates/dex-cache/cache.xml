@@ -2,18 +2,32 @@
 <items version="2" >
 
     <item
-        jar="E:\github_local\WebDAV\mobile\build\intermediates\exploded-aar\com.android.support\support-v4\22.0.0\libs\internal_impl-22.0.0.jar"
+        jar="E:\GitHub\local\WebDav\WebDAV\mobile\build\intermediates\exploded-aar\WebDAV\jackrabbit-webdav\unspecified\classes.jar"
         jumboMode="false"
         revision="21.1.2"
-        sha1="b5b92f469d515a13d778900f6d50c03d12f35504">
-        <dex dex="E:\github_local\WebDAV\mobile\build\intermediates\pre-dexed\debug\internal_impl-22.0.0-9ed9077a314d3a3db45de3ca7c63b83250d40098.jar" />
+        sha1="34262e657081b4236b3097a02d9145d771a47c58">
+        <dex dex="E:\GitHub\local\WebDav\WebDAV\mobile\build\intermediates\pre-dexed\debug\classes-83cb060b458a39d242b44a2a6ffdb12e0f4a8259.jar" />
     </item>
     <item
-        jar="E:\github_local\WebDAV\mobile\build\intermediates\exploded-aar\com.android.support\support-v4\22.0.0\classes.jar"
+        jar="C:\Users\Administrator\.gradle\caches\modules-2\files-2.1\org.apache.jackrabbit\jackrabbit-webdav\2.10.1\ba35a4637e985d1b6dcdca7de75a22b3a0f52d13\jackrabbit-webdav-2.10.1.jar"
         jumboMode="false"
         revision="21.1.2"
-        sha1="4e86306289ace4aa0cfec44a05ed2b410d36989d">
-        <dex dex="E:\github_local\WebDAV\mobile\build\intermediates\pre-dexed\debug\classes-41c464035ac39db697973db2f6fec70757bb3bc0.jar" />
+        sha1="ba35a4637e985d1b6dcdca7de75a22b3a0f52d13">
+        <dex dex="E:\GitHub\local\WebDav\WebDAV\mobile\build\intermediates\pre-dexed\debug\jackrabbit-webdav-2.10.1-17c624a090bf4523c45fa6f4e58aeb4692c9eb1e.jar" />
+    </item>
+    <item
+        jar="C:\Users\Administrator\.gradle\caches\modules-2\files-2.1\de.greenrobot\eventbus\2.4.0\ddd166d01b3158d1c00576d29f7ed15c030df719\eventbus-2.4.0.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="ddd166d01b3158d1c00576d29f7ed15c030df719">
+        <dex dex="E:\GitHub\local\WebDav\WebDAV\mobile\build\intermediates\pre-dexed\debug\eventbus-2.4.0-03e25c6b3178abc8ecb48b05be1f281aa0724b29.jar" />
+    </item>
+    <item
+        jar="C:\Users\Administrator\.gradle\caches\modules-2\files-2.1\commons-httpclient\commons-httpclient\3.1\964cd74171f427720480efdec40a7c7f6e58426a\commons-httpclient-3.1.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="964cd74171f427720480efdec40a7c7f6e58426a">
+        <dex dex="E:\GitHub\local\WebDav\WebDAV\mobile\build\intermediates\pre-dexed\debug\commons-httpclient-3.1-eed417fa19f13e1bc5d71f9aa83a23e0bcbbc962.jar" />
     </item>
     <item
         jar="E:\github_local\WebDAV\mobile\build\intermediates\exploded-aar\WebDAV\commomui\unspecified\classes.jar"
@@ -21,6 +35,27 @@
         revision="21.1.2"
         sha1="d906af8fda139e42ec45d50248a24aa0b8a3a098">
         <dex dex="E:\github_local\WebDAV\mobile\build\intermediates\pre-dexed\debug\classes-86e75095b419d1167728d924ef4e5b46e8dea950.jar" />
+    </item>
+    <item
+        jar="E:\github_local\WebDAV\mobile\build\intermediates\exploded-aar\com.android.support\support-v4\22.0.0\libs\internal_impl-22.0.0.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="b5b92f469d515a13d778900f6d50c03d12f35504">
+        <dex dex="E:\github_local\WebDAV\mobile\build\intermediates\pre-dexed\debug\internal_impl-22.0.0-9ed9077a314d3a3db45de3ca7c63b83250d40098.jar" />
+    </item>
+    <item
+        jar="E:\GitHub\local\WebDav\WebDAV\mobile\build\intermediates\exploded-aar\WebDAV\library\unspecified\classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="38a322ca77f373a474ad5c19cbc4d7e49a876cc9">
+        <dex dex="E:\GitHub\local\WebDav\WebDAV\mobile\build\intermediates\pre-dexed\debug\classes-6512681a3e284347e6169bcd8ead0852d0e33609.jar" />
+    </item>
+    <item
+        jar="E:\GitHub\local\WebDav\WebDAV\mobile\build\intermediates\exploded-aar\WebDAV\commomui\unspecified\classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="0095c63f186eee4882baf4acfed88102996a3612">
+        <dex dex="E:\GitHub\local\WebDav\WebDAV\mobile\build\intermediates\pre-dexed\debug\classes-b2ab55e2e8c30f5d75094a7cbac6cac4ae926548.jar" />
     </item>
     <item
         jar="E:\github_local\WebDAV\mobile\build\intermediates\exploded-aar\WebDAV\library\unspecified\classes.jar"
@@ -35,6 +70,62 @@
         revision="21.1.2"
         sha1="685d0b2c590447e85284ed84712cb363ba04eff8">
         <dex dex="E:\github_local\WebDAV\mobile\build\intermediates\pre-dexed\debug\support-annotations-22.0.0-9c8b3b854fb10acbe210c9a659f1938238ce2ff8.jar" />
+    </item>
+    <item
+        jar="E:\GitHub\local\WebDav\WebDAV\mobile\build\intermediates\exploded-aar\com.android.support\support-v4\22.0.0\libs\internal_impl-22.0.0.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="b5b92f469d515a13d778900f6d50c03d12f35504">
+        <dex dex="E:\GitHub\local\WebDav\WebDAV\mobile\build\intermediates\pre-dexed\debug\internal_impl-22.0.0-98d1df1947459b364d73b292b8e41447aab3f8d8.jar" />
+    </item>
+    <item
+        jar="C:\Users\Administrator\.gradle\caches\modules-2\files-2.1\commons-codec\commons-codec\1.9\9ce04e34240f674bc72680f8b843b1457383161a\commons-codec-1.9.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="9ce04e34240f674bc72680f8b843b1457383161a">
+        <dex dex="E:\GitHub\local\WebDav\WebDAV\mobile\build\intermediates\pre-dexed\debug\commons-codec-1.9-54afac7af66c410f1a7f08e2a1d3a5975e1511bd.jar" />
+    </item>
+    <item
+        jar="E:\GitHub\local\WebDav\WebDAV\mobile\build\intermediates\exploded-aar\com.android.support\support-v4\22.0.0\classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="4e86306289ace4aa0cfec44a05ed2b410d36989d">
+        <dex dex="E:\GitHub\local\WebDav\WebDAV\mobile\build\intermediates\pre-dexed\debug\classes-cfa02a67e01fca7e9d638aed48f0024b5688453e.jar" />
+    </item>
+    <item
+        jar="C:\Users\Administrator\.gradle\caches\modules-2\files-2.1\de.greenrobot\greendao\1.3.7\dda08161d004c4df96938da6909f1c2b96cd33c8\greendao-1.3.7.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="dda08161d004c4df96938da6909f1c2b96cd33c8">
+        <dex dex="E:\GitHub\local\WebDav\WebDAV\mobile\build\intermediates\pre-dexed\debug\greendao-1.3.7-7f8c1aac3a5838d150b4ad3e91d5f8e4c02f92da.jar" />
+    </item>
+    <item
+        jar="C:\Users\Administrator\.gradle\caches\modules-2\files-2.1\org.slf4j\slf4j-api\1.7.12\8e20852d05222dc286bf1c71d78d0531e177c317\slf4j-api-1.7.12.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="8e20852d05222dc286bf1c71d78d0531e177c317">
+        <dex dex="E:\GitHub\local\WebDav\WebDAV\mobile\build\intermediates\pre-dexed\debug\slf4j-api-1.7.12-5d6d08b032bccd218113dc81c4d9e4cc53e54fd2.jar" />
+    </item>
+    <item
+        jar="C:\Users\Administrator\.gradle\caches\modules-2\files-2.1\org.slf4j\jcl-over-slf4j\1.7.4\b7c1efe9a78b315b6be624e6f6f944788c6be6c0\jcl-over-slf4j-1.7.4.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="b7c1efe9a78b315b6be624e6f6f944788c6be6c0">
+        <dex dex="E:\GitHub\local\WebDav\WebDAV\mobile\build\intermediates\pre-dexed\debug\jcl-over-slf4j-1.7.4-cef0ee7a9090aec719e029f47f30979f9fa43251.jar" />
+    </item>
+    <item
+        jar="E:\github_local\WebDAV\mobile\build\intermediates\exploded-aar\com.android.support\support-v4\22.0.0\classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="4e86306289ace4aa0cfec44a05ed2b410d36989d">
+        <dex dex="E:\github_local\WebDAV\mobile\build\intermediates\pre-dexed\debug\classes-41c464035ac39db697973db2f6fec70757bb3bc0.jar" />
+    </item>
+    <item
+        jar="C:\Users\Administrator\.gradle\caches\modules-2\files-2.1\com.jakewharton\butterknife\6.1.0\63735f48b82bcd24cdd33821342428252eb1ca5a\butterknife-6.1.0.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="63735f48b82bcd24cdd33821342428252eb1ca5a">
+        <dex dex="E:\GitHub\local\WebDav\WebDAV\mobile\build\intermediates\pre-dexed\debug\butterknife-6.1.0-69d2d3c27627661806f0bd051a18a12cc184adc9.jar" />
     </item>
 
 </items>

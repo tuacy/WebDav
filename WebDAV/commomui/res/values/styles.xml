@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:ui="http://schemas.android.com/apk/res/com.vae.wuyunxing.commomui">
+
+    <style name="SwipeBackLayout">
+        <item name="edge_size">50dip</item>
+        <item name="shadow_left">@drawable/shadow_left</item>
+        <item name="shadow_right">@drawable/shadow_right</item>
+        <item name="shadow_bottom">@drawable/shadow_bottom</item>
+    </style>
+    
+    <style name="SwitchBtnTextAppearance">
+        <item name="android:textSize">@dimen/switch_btn_txt_size</item>
+        <item name="android:textColor">@color/switch_btn_txt</item>
+    </style>
+    <style name="SwitchButton">
+        <item name="track">@drawable/switch_btn_onoff_bg</item>
+        <item name="thumb">@drawable/switch_btn_thumb</item>
+        <item name="thumbUnable">@drawable/switch_btn_thumb_unable</item>
+        <!-- <item name="switchTextAppearance">@android:style/TextAppearance.Small</item> -->
+        <item name="switchTextAppearance">@style/SwitchBtnTextAppearance</item>
+        <!-- <item name="textOn">@string/switch_btn_capital_on</item> -->
+        <!-- <item name="textOff">@string/switch_btn_capital_off</item> -->
+        <item name="thumbTextPadding">@dimen/switch_btn_thumb_text_padding</item>
+        <item name="switchMinWidth">@dimen/switch_btn_min_width</item>
+        <item name="switchPadding">@dimen/switch_btn_padding</item>
+        <item name="textOnColor">@color/switch_btn_on_text</item>
+        <item name="textOffColor">@color/switch_btn_off_text</item>
+    </style>
+    
+</resources>

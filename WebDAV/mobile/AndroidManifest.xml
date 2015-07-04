@@ -1,10 +1,26 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.vae.wuyunxing.mobile">
+    package="com.vae.wuyunxing.webdav.mobile">
 
     <application
+        android:name="com.vae.wuyunxing.webdav.mobile.MobileApplication"
         android:allowBackup="true"
-        android:label="@string/app_name"
-        >
+        android:enabled="true"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name">
+
+        <!-- Main -->
+        <activity
+            android:name="com.vae.wuyunxing.webdav.mobile.test.TextMainActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.Translucent"
+            android:launchMode="singleTask">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
 
     </application>
 
