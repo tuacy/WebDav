@@ -68,4 +68,8 @@
     <!-- Drive browser -->
     <dimen name="drive_browser_file_list_refresh_button_width">60dp</dimen>
     <dimen name="drive_browser_file_list_refresh_button_height">26dp</dimen>
+
+    <!-- Dialog -->
+    <dimen name="dialog_edit_shape_width">1dp</dimen>
+    <dimen name="dialog_edit_shape_radius">15dp</dimen>
 </resources>

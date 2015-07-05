@@ -33,4 +33,8 @@
     <color name="drive_browser_file_list_refresh_button_stroke">#ffc4c4c4</color>
     <color name="drive_browser_file_list_refresh_button_normal">#ffe2e2e2</color>
     <color name="drive_browser_file_list_refresh_button_pressed">#ffd8d8d8</color>
+
+    <!-- Edit dialog -->
+    <color name="dialog_edit_background_selected">#ff64e0ff</color>
+    <color name="dialog_edit_background_normal">#ffdfdfdf</color>
 </resources>

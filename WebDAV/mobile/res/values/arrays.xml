@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- category icons (Popup windows) -->
+    <array name="category_popup_window_icons">
+        <item>@drawable/document</item>
+        <item>@drawable/music</item>
+        <item>@drawable/video</item>
+        <item>@drawable/photo</item>
+        <item>@drawable/bittorrent</item>
+        <item>@drawable/application</item>
+        <item>@drawable/others</item>
+    </array>
+
+    <!-- category name (Popup windows) -->
+    <array name="category_popup_window_names">
+        <item>@string/document</item>
+        <item>@string/music</item>
+        <item>@string/video</item>
+        <item>@string/photo</item>
+        <item>@string/bit_torrent</item>
+        <item>@string/application</item>
+        <item>@string/all</item>
+    </array>
+
+
+    <!-- sort file type Popup Windows -->
+    <array name="sort_file_types">
+        <item>@string/sort_by_file_name</item>
+        <item>@string/sort_by_file_size</item>
+        <item>@string/sort_by_date</item>
+        <item>@string/sort_by_type</item>
+    </array>
+</resources>

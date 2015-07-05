@@ -9,8 +9,14 @@ import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.vae.wuyunxing.webdav.library.log.MKLog;
 import com.vae.wuyunxing.webdav.mobile.R;
+import com.vae.wuyunxing.webdav.mobile.main.message.CreateFileEvent;
 import com.vae.wuyunxing.webdav.mobile.main.message.FilterFileEvent;
+import com.vae.wuyunxing.webdav.mobile.main.message.SortFileEvent;
+
+import java.util.List;
+import java.util.concurrent.Callable;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -60,6 +66,17 @@ public class RemoteFileListFragment extends Fragment {
 //
 //    }
 
+    /** filter file event  */
     public void onEventMainThread(FilterFileEvent event) {
+        MKLog.d(RemoteFileListFragment.class, "get filter event");
     }
+
+    /** sort file event  */
+    public void onEventMainThread(SortFileEvent event) {
+    }
+
+    /** create new file event  */
+    public void onEventMainThread(CreateFileEvent event) {
+    }
+
 }

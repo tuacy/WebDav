@@ -95,7 +95,8 @@ public class MobileBaseActivity extends SwipeBackActivity {
 		FragmentTransaction ft = fm.beginTransaction();
 		Fragment f = fm.findFragmentByTag(clz.getName());
 		if (f != null) {
-			ft.remove(f).commit();
+			ft.remove(f).commit()
+            ;
 		}
 	}
 

@@ -38,4 +38,16 @@
     <style name="NoTitleDialog" parent="Dialog">
         <item name="android:windowNoTitle">true</item>
     </style>
+
+    <!-- popwindow -->
+    <style name="CategoryPopupWindowAnimation">
+        <item name="android:windowEnterAnimation">@anim/category_popup_window_enter</item>
+        <item name="android:windowExitAnimation">@anim/category_popup_window_exit</item>
+    </style>
+
+    <style name="SortPopupWindowAnimation">
+        <item name="android:windowEnterAnimation">@anim/sort_popup_window_enter</item>
+        <item name="android:windowExitAnimation">@anim/sort_popup_window_exit</item>
+    </style>
+
 </resources>

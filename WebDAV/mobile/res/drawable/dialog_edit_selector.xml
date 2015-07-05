@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_focused="true">
+        <shape>
+            <solid android:color="@android:color/transparent"/>
+            <stroke android:width="@dimen/dialog_edit_shape_width" android:color="@color/dialog_edit_background_selected"/>
+            <corners android:radius="@dimen/dialog_edit_shape_radius"/>
+            <padding android:left="@dimen/margin_tiny_1"
+                android:top="@dimen/margin_tiny_1"
+                android:right="@dimen/margin_tiny_1"
+                android:bottom="@dimen/margin_tiny_1"/>
+        </shape>
+    </item>
+
+    <item>
+        <shape>
+            <solid android:color="@android:color/transparent"/>
+            <stroke android:width="@dimen/dialog_edit_shape_width" android:color="@color/dialog_edit_background_normal"/>
+            <corners android:radius="@dimen/dialog_edit_shape_radius"/>
+            <padding android:left="@dimen/margin_tiny_1"
+                android:top="@dimen/margin_tiny_1"
+                android:right="@dimen/margin_tiny_1"
+                android:bottom="@dimen/margin_tiny_1"/>
+        </shape>
+    </item>
+</selector>

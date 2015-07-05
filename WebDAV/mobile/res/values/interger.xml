@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Category popup window -->
+    <integer name="category_popup_window_column_count">4</integer>
+
+    <!-- Uplaod type dialog -->
+    <integer name="upload_type_dialog_column_count">3</integer>
+</resources>
