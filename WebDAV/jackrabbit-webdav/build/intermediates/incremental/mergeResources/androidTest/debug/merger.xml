@@ -1,2 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<merger version="3"><dataSet config="debug"><source path="E:\GitHub\local\WebDav\WebDAV\jackrabbit-webdav\build\intermediates\bundles\debug\res"/></dataSet><dataSet config="main"><source path="E:\GitHub\local\WebDav\WebDAV\jackrabbit-webdav\src\androidTest\res"/><source path="E:\GitHub\local\WebDav\WebDAV\jackrabbit-webdav\build\generated\res\rs\androidTest\debug"/><source path="E:\GitHub\local\WebDav\WebDAV\jackrabbit-webdav\build\generated\res\generated\androidTest\debug"/></dataSet><mergedItems/></merger>

@@ -41,3 +41,13 @@ $RECYCLE.BIN/
 Network Trash Folder
 Temporary Items
 .apdisk
+/WebDAV/*.iml
+/WebDAV/*.iml
+/WebDAV/*.iml
+/WebDAV/jackrabbit-webdav/build
+/WebDAV/.idea
+/WebDAV/.gradle
+/WebDAV/.idea
+/WebDAV/.gradle
+/WebDAV/local.properties
+/WebDAV/WebDAV.iml
