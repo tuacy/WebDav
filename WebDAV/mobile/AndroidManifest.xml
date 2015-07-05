@@ -10,7 +10,7 @@
 
         <!-- Main -->
         <activity
-            android:name="com.vae.wuyunxing.webdav.mobile.test.TextMainActivity"
+            android:name="com.vae.wuyunxing.webdav.mobile.main.MainActivity"
             android:configChanges="keyboardHidden|orientation"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Translucent"
