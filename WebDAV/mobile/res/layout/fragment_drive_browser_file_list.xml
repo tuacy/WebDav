@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:cube_ptr="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/activity_background">
+
+    <in.srain.cube.views.ptr.PtrClassicFrameLayout
+        android:id="@+id/drive_browser_ptr_frame_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        cube_ptr:ptr_keep_header_when_refresh="true"
+        cube_ptr:ptr_pull_to_fresh="false"
+        cube_ptr:ptr_ratio_of_header_height_to_refresh="1.2"
+        cube_ptr:ptr_resistance="2.5">
+
+        <ListView
+            android:id="@+id/drive_browser_file_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:divider="@android:color/transparent"
+            android:dividerHeight="0dp"
+            android:listSelector="@android:color/transparent" />
+
+    </in.srain.cube.views.ptr.PtrClassicFrameLayout>
+
+    <FrameLayout
+        android:id="@+id/drive_browser_empty_hint"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:layout_centerInParent="true">
+
+        <TextView
+            android:id="@+id/drive_browser_list_hint"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/drive_browser_file_list_nothing"
+            android:gravity="center"
+            android:ellipsize="marquee"
+            android:textSize="@dimen/text_size_little"
+            android:textColor="@color/black_40alpha" />
+
+        <Button
+            android:id="@+id/drive_browser_list_refresh"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minWidth="0dp"
+            android:minHeight="0dp"
+            android:background="@drawable/drive_browser_file_list_refresh_button_selector"
+            android:layout_gravity="center_horizontal|bottom"
+            android:layout_marginBottom="@dimen/margin_tiny_3"
+            android:text="@string/refresh"
+            android:textColor="@color/black_90alpha"
+            android:textSize="@dimen/text_size_little"/>
+
+    </FrameLayout>
+
+</RelativeLayout>

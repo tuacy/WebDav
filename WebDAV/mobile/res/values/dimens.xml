@@ -64,4 +64,8 @@
     <dimen name="padding_minus_little_1">-14dp</dimen>
     <dimen name="padding_minus_little_2">-16dp</dimen>
     <dimen name="padding_minus_little_3">-18dp</dimen>
+
+    <!-- Drive browser -->
+    <dimen name="drive_browser_file_list_refresh_button_width">60dp</dimen>
+    <dimen name="drive_browser_file_list_refresh_button_height">26dp</dimen>
 </resources>

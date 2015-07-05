@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_pressed="true">
+        <shape android:shape="rectangle">
+            <size android:width="@dimen/drive_browser_file_list_refresh_button_width" android:height="@dimen/drive_browser_file_list_refresh_button_height" />
+            <solid android:color="@color/drive_browser_file_list_refresh_button_pressed" />
+            <stroke android:width="1dp" android:color="@color/drive_browser_file_list_refresh_button_stroke" />
+        </shape>
+    </item>
+    <item>
+        <shape android:shape="rectangle">
+            <size android:width="@dimen/drive_browser_file_list_refresh_button_width" android:height="@dimen/drive_browser_file_list_refresh_button_height" />
+            <solid android:color="@color/drive_browser_file_list_refresh_button_normal" />
+            <stroke android:width="1dp" android:color="@color/drive_browser_file_list_refresh_button_stroke" />
+        </shape>
+    </item>
+</selector>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:background="@drawable/drive_browser_title_normal_background">
+
+    <ImageButton
+        android:id="@+id/action_bar_drive_browser_home_as_up"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:src="@drawable/home_as_up_gray_selector"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/action_bar_drive_browser_text"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="10"
+        android:singleLine="true"
+        android:ellipsize="middle"
+        android:layout_marginLeft="@dimen/margin_tiny_2"
+        android:layout_marginRight="@dimen/margin_tiny_2"
+        android:textSize="@dimen/text_size_small"
+        android:textColor="@android:color/white" />
+
+    <ImageButton
+        android:id="@+id/action_bar_drive_browser_user"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:background="@android:color/transparent"
+        android:src="@drawable/drive_browser_user_selector"
+        android:visibility="gone" />
+
+</LinearLayout>

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/activity_background">
+
+    <FrameLayout
+        android:id="@+id/activity_drive_browser_action_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <fragment
+        android:id="@+id/activity_drive_browser_tool_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/activity_drive_browser_action_bar"
+        android:name="com.vae.wuyunxing.webdav.mobile.main.ToolBarFragment"
+        tools:layout="@layout/fragment_drive_browser_tool_bar" />
+
+    <FrameLayout
+        android:id="@+id/activity_drive_browser_file_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/activity_drive_browser_function_bar"
+        android:layout_below="@id/activity_drive_browser_tool_bar" />
+
+    <FrameLayout
+        android:id="@+id/activity_drive_browser_function_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true" />
+
+</RelativeLayout>
