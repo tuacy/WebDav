@@ -12,9 +12,6 @@ import com.vae.wuyunxing.webdav.mobile.R;
 import butterknife.ButterKnife;
 import de.greenrobot.event.EventBus;
 
-/**
- * Created by vae on 2015/7/5.
- */
 public class NormalActionBarFragment extends Fragment {
 
     @Override

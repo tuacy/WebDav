@@ -6,9 +6,6 @@ import android.os.Bundle;
 
 import de.greenrobot.event.EventBus;
 
-/**
- * Created by Administrator on 2015/7/3. MobileApplication
- */
 public class MobileApplication extends Application implements Application.ActivityLifecycleCallbacks {
 
 

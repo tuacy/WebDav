@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingLeft="@dimen/padding_mini_2"
+    android:paddingRight="@dimen/padding_mini_2"
+    android:background="@drawable/drive_browser_title_edit_background">
+
+    <Button
+        android:id="@+id/action_bar_drive_browser_cancel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        android:paddingLeft="@dimen/padding_tiny_3"
+        android:paddingRight="@dimen/padding_tiny_3"
+        android:background="@drawable/action_bar_button_selector"
+        android:textColor="@drawable/background_color_normal_white_select_blue"
+        android:textSize="@dimen/text_size_small"
+        android:text="@string/cancel"
+        android:minWidth="0dp"
+        android:minHeight="0dp" />
+
+    <Button
+        android:id="@+id/action_bar_drive_browser_check_all"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:paddingLeft="@dimen/padding_tiny_3"
+        android:paddingRight="@dimen/padding_tiny_3"
+        android:textColor="@drawable/background_color_normal_white_select_blue"
+        android:textSize="@dimen/text_size_small"
+        android:background="@drawable/action_bar_button_selector"
+        android:minWidth="0dp"
+        android:minHeight="0dp" />
+
+    <TextView
+        android:id="@+id/action_bar_drive_browser_select_count"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toLeftOf="@id/action_bar_drive_browser_check_all"
+        android:layout_toRightOf="@id/action_bar_drive_browser_cancel"
+        android:layout_marginLeft="@dimen/margin_mini_1"
+        android:layout_marginRight="@dimen/margin_mini_1"
+        android:layout_centerVertical="true"
+        android:singleLine="true"
+        android:ellipsize="marquee"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/text_size_small" />
+
+</RelativeLayout>

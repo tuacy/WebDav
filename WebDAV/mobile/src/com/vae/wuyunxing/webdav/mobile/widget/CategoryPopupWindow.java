@@ -12,9 +12,6 @@ import com.vae.wuyunxing.webdav.mobile.R;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Created by vae on 2015/7/5.
- */
 public class CategoryPopupWindow extends PopupWindow {
     public CategoryPopupWindow(Context context) {
         super(context);

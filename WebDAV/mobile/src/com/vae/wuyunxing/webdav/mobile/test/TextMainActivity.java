@@ -7,9 +7,6 @@ import com.vae.wuyunxing.webdav.mobile.MobileBaseActivity;
 
 import butterknife.ButterKnife;
 
-/**
- * Created by Administrator on 2015/7/4. for text
- */
 public class TextMainActivity extends MobileBaseActivity {
 
 	@Override

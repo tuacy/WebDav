@@ -23,9 +23,6 @@ import butterknife.InjectView;
 import de.greenrobot.event.EventBus;
 import in.srain.cube.views.ptr.PtrFrameLayout;
 
-/**
- * Created by vae on 2015/7/5.
- */
 public class RemoteFileListFragment extends Fragment {
 
     @InjectView(R.id.drive_browser_ptr_frame_list)

@@ -29,9 +29,6 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import de.greenrobot.event.EventBus;
 
-/**
- * Created by vae on 2015/7/5.
- */
 public class ToolBarFragment extends Fragment {
 
     private static final String KEY_ICON = "icon";

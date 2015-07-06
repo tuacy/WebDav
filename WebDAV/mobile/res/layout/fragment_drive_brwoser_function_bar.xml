@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/drive_browser_function_bar_background">
+
+    <LinearLayout
+        android:id="@+id/drive_browser_function_bar_download"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:gravity="center">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/drive_browser_function_bar_download_selector" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:singleLine="true"
+            android:gravity="center"
+            android:ellipsize="middle"
+            android:text="@string/download"
+            android:textSize="@dimen/text_size_small"
+            android:textColor="@drawable/background_color_normal_white_select_blue" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/drive_browser_function_bar_delete"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:gravity="center">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/drive_browser_function_bar_delete_selector" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:singleLine="true"
+            android:gravity="center"
+            android:ellipsize="middle"
+            android:text="@string/delete"
+            android:textSize="@dimen/text_size_small"
+            android:textColor="@drawable/background_color_normal_white_select_blue" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/drive_browser_function_bar_rename"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:gravity="center">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/drive_browser_function_bar_rename_selector" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:singleLine="true"
+            android:gravity="center"
+            android:ellipsize="middle"
+            android:text="@string/rename"
+            android:textSize="@dimen/text_size_small"
+            android:textColor="@drawable/background_color_normal_white_select_blue" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/drive_browser_function_bar_move"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:gravity="center">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/drive_browser_function_bar_move_selector" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:singleLine="true"
+            android:gravity="center"
+            android:ellipsize="middle"
+            android:text="@string/move"
+            android:textSize="@dimen/text_size_small"
+            android:textColor="@drawable/background_color_normal_white_select_blue" />
+
+    </LinearLayout>
+
+</LinearLayout>

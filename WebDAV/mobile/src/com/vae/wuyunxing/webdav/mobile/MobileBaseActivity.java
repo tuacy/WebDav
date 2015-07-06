@@ -12,9 +12,6 @@ import com.vae.wuyunxing.webdav.library.log.MKLog;
 
 import de.greenrobot.event.EventBus;
 
-/**
- * Created by wuyunxing on 2015/7/3. MobileBaseActivity
- */
 public class MobileBaseActivity extends SwipeBackActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {

@@ -4,12 +4,11 @@ import android.os.Bundle;
 
 import com.vae.wuyunxing.webdav.mobile.MobileBaseActivity;
 import com.vae.wuyunxing.webdav.mobile.R;
+import com.vae.wuyunxing.webdav.mobile.main.message.EnterEditModeEvent;
+import com.vae.wuyunxing.webdav.mobile.main.message.ExitEditModeEvent;
 
 import butterknife.ButterKnife;
 
-/**
- * Created by vae on 2015/7/5.
- */
 public class MainActivity extends MobileBaseActivity{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,5 +23,17 @@ public class MainActivity extends MobileBaseActivity{
     protected void onDestroy() {
         super.onDestroy();
         ButterKnife.reset(this);
+    }
+
+    public void onEventMainThread(EnterEditModeEvent event) {
+        addFragment(R.id.activity_drive_browser_action_bar, EditActionBarFragment.class, R.animator.slide_in_from_top,
+                    R.animator.slide_out_to_top);
+        addFragment(R.id.activity_drive_browser_function_bar, EditFunctionBarFragment.class, R.animator.slide_in_from_bottom,
+                    R.animator.slide_out_to_bottom);
+    }
+
+    public void onEventMainThread(ExitEditModeEvent event) {
+        removeFragment(R.id.activity_drive_browser_action_bar, EditActionBarFragment.class);
+        removeFragment(R.id.activity_drive_browser_function_bar, EditFunctionBarFragment.class);
     }
 }
