@@ -1,4 +1,4 @@
-package com.vae.wuyunxing.webdav.mobile.config;
+package com.vae.wuyunxing.webdav.library.config;
 
 import android.content.Context;
 import android.content.res.AssetManager;
@@ -9,21 +9,21 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
-public class MobileConfig {
+public class LibraryConfig {
 
-	public static final String DEBUG                  = "DEBUG";
+	public static final String WEBDAV_ROOT_PATH    = "WEBDAV_ROOT_PATH";
 
 	private static final Properties mProps = new Properties();
-	private static MobileConfig sInstance;
+	private static LibraryConfig sInstance;
 
 	public static void initialize(Context context) {
 		InputStream in = null;
 		try {
 			AssetManager assetManager = context.getAssets();
-			in = assetManager.open("mobile-configs.properties");
+			in = assetManager.open("library-configs.properties");
 			mProps.load(in);
 		} catch (IOException e) {
-			MKLog.e(MobileConfig.class, e, "Connot open: %s", "mobile-configs.properties");
+			MKLog.e(LibraryConfig.class, e, "Connot open: %s", "library-configs.properties");
 		} finally {
 			if (in != null) {
 				try {
@@ -34,9 +34,9 @@ public class MobileConfig {
 		}
 	}
 
-	public synchronized static MobileConfig getInstance() {
+	public synchronized static LibraryConfig getInstance() {
 		if (sInstance == null) {
-			sInstance = new MobileConfig();
+			sInstance = new LibraryConfig();
 		}
 		return sInstance;
 	}
@@ -57,11 +57,11 @@ public class MobileConfig {
 		return Integer.parseInt(mProps.getProperty(key, Integer.toString(defVal)));
 	}
 
-	public String getString(String key) {
-		return getString(key, "");
+	public String getString(String key, String defaultValue) {
+		return mProps.getProperty(key, defaultValue);
 	}
 
-	public String getString(String key, String defVal) {
-		return mProps.getProperty(key, defVal);
+	public String getString(String key) {
+		return mProps.getProperty(key);
 	}
 }

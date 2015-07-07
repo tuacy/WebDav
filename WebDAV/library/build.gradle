@@ -28,5 +28,6 @@ android {
 }
 
 dependencies {
+    compile project(':jackrabbit-webdav')
     compile fileTree(dir: 'libs', include: ['*.jar'])
 }

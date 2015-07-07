@@ -53,6 +53,8 @@ public class RenameRemoteFileOperation extends RemoteOperation {
     private String mOldRemotePath;
     private String mNewName;
     private String mNewRemotePath;
+    /** if the destination file exist before and mCover = true then will cover the original file */
+    private boolean mCover = false;
     
     
     /**
@@ -95,11 +97,12 @@ public class RenameRemoteFileOperation extends RemoteOperation {
             if (mNewName.equals(mOldName)) {
                 return new RemoteOperationResult(ResultCode.OK);
             }
-        
-            
-            // check if a file with the new name already exists
-            if (client.existsFile(mNewRemotePath)) {
-            	return new RemoteOperationResult(ResultCode.INVALID_OVERWRITE);
+
+            if (!mCover) {
+                // check if a file with the new name already exists
+                if (client.existsFile(mNewRemotePath)) {
+                    return new RemoteOperationResult(ResultCode.INVALID_OVERWRITE);
+                }
             }
             
             move = new LocalMoveMethod( client.getWebdavUri() + WebdavUtils.encodePath(mOldRemotePath),
@@ -146,6 +149,14 @@ public class RenameRemoteFileOperation extends RemoteOperation {
             return status == 201 || status == 204;
         }
             
+    }
+
+    /**
+     * whether cover the original file
+     * @param cover
+     */
+    public void setCoverState(boolean cover) {
+        mCover = cover;
     }
 
 }
