@@ -2,6 +2,7 @@ package com.vae.wuyunxing.webdav.mobile;
 
 import android.app.Activity;
 import android.app.Application;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -12,12 +13,20 @@ import com.vae.wuyunxing.webdav.mobile.config.MobileConfig;
 
 import de.greenrobot.event.EventBus;
 
+import greendao.DaoMaster;
+import greendao.DaoSession;
+
 public class MobileApplication extends Application implements Application.ActivityLifecycleCallbacks {
 
+	/** greenDao database DaoSession */
+	private DaoSession mDaoSession;
 
 	@Override
 	public void onCreate() {
 		super.onCreate();
+
+		/** setup greenDao database */
+		setupDatabase();
 
 		LibraryConfig.initialize(MobileApplication.this);
 		MobileConfig.initialize(MobileApplication.this);
@@ -25,6 +34,21 @@ public class MobileApplication extends Application implements Application.Activi
 		if (MobileConfig.getInstance().getBoolean(MobileConfig.DEBUG, false)) {
 			MKLog.setCustomLogger(new MobileLogger());
 		}
+	}
+
+	private void setupDatabase() {
+		DaoMaster.DevOpenHelper helper = new DaoMaster.DevOpenHelper(this, "androidwebdav-mobile.db", null);
+		SQLiteDatabase db = helper.getWritableDatabase();
+		DaoMaster daoMaster = new DaoMaster(db);
+		mDaoSession = daoMaster.newSession();
+	}
+
+	/***
+	 * Get DaoSession
+	 * @return
+	 */
+	public DaoSession getDaoSession() {
+		return mDaoSession;
 	}
 
 	private int mActivityCount = 0;
