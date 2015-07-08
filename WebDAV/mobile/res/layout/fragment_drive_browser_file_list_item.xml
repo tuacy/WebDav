@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/list_item_background_selector"
+    android:layout_marginLeft="@dimen/margin_tiny_3"
+    android:layout_marginRight="@dimen/margin_tiny_3"
+    android:paddingLeft="@dimen/padding_little_1"
+    android:paddingRight="@dimen/padding_little_1">
+
+    <ImageView
+        android:id="@+id/drive_browser_file_list_item_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true" />
+
+    <TextView
+        android:id="@+id/drive_browser_file_list_item_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ellipsize="marquee"
+        android:singleLine="true"
+        android:layout_toRightOf="@id/drive_browser_file_list_item_icon"
+        android:layout_toLeftOf="@+id/drive_browser_file_list_item_selection"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="@dimen/margin_tiny_2"
+        android:layout_marginLeft="@dimen/margin_mini_1"
+        android:layout_marginRight="@dimen/margin_mini_1"
+        android:textColor="@color/drive_browser_file_list_item_name"
+        android:textSize="@dimen/text_size_big" />
+
+    <TextView
+        android:id="@+id/drive_browser_file_list_item_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:singleLine="true"
+        android:layout_alignLeft="@id/drive_browser_file_list_item_name"
+        android:layout_alignRight="@id/drive_browser_file_list_item_name"
+        android:layout_below="@+id/drive_browser_file_list_item_name"
+        android:layout_marginTop="@dimen/margin_tiny_1"
+        android:textColor="@color/drive_browser_file_list_item_date"
+        android:textSize="@dimen/text_size_tiny" />
+
+    <ImageView
+        android:id="@+id/drive_browser_file_list_item_selection"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true" />
+
+</RelativeLayout>

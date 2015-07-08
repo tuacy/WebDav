@@ -7,10 +7,12 @@ import com.vae.wuyunxing.webdav.library.util.FileUtil;
 
 import java.util.Calendar;
 
+
 public class JackrabbitFileInfo implements FileInfo {
 
 	private final RemoteFile   mRemoteFile;
 	private final FileCategory mCategory;
+
 
 	private JackrabbitFileInfo(RemoteFile file) {
 		this.mRemoteFile = file;
@@ -95,6 +97,7 @@ public class JackrabbitFileInfo implements FileInfo {
 		return mCategory;
 	}
 
+	@Override
 	public boolean equals(Object o) {
 		if (o == this) {
 			return true;
@@ -109,6 +112,7 @@ public class JackrabbitFileInfo implements FileInfo {
 			   file.canWrite() == this.canWrite();
 	}
 
+	@Override
 	public int hashCode() {
 		int result = 17;
 		result = 31 * result + (this.exists() ? 1 : 0);

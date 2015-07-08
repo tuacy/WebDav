@@ -26,6 +26,7 @@ import com.vae.wuyunxing.webdav.library.util.PathUtil;
 import org.apache.commons.httpclient.Credentials;
 import org.apache.commons.httpclient.Header;
 import org.apache.commons.httpclient.HttpException;
+import org.apache.commons.httpclient.methods.HeadMethod;
 import org.apache.http.HttpStatus;
 import org.apache.jackrabbit.webdav.DavConstants;
 import org.apache.jackrabbit.webdav.DavException;
@@ -41,6 +42,7 @@ import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class JackrabbitFileExplorer implements FileExplorer {
 
 	private static final int GET_FILE_SYNC_READ_TIMEOUT       = 40000;
@@ -55,6 +57,12 @@ public class JackrabbitFileExplorer implements FileExplorer {
 	private static final int RENAME_READ_TIMEOUT              = 600000;
 	private static final int RENAME_CONNECTION_TIMEOUT        = 5000;
 
+	private final RemoteFile     mRootDir;
+	private final Credentials    mCredentials;
+	private       RemoteFile     mCurrentDir;
+	private final OwnCloudClient mClient;
+	private       Context        mContext;
+
 	private enum PathType {
 		CURRENT,
 		PARENT,
@@ -66,11 +74,57 @@ public class JackrabbitFileExplorer implements FileExplorer {
 		INVALID
 	}
 
-	private final RemoteFile     mRootDir;
-	private final Credentials    mCredentials;
-	private       RemoteFile     mCurrentDir;
-	private final OwnCloudClient mClient;
-	private       Context        mContext;
+	public JackrabbitFileExplorer(JackrabbitPath rootPath, Context context) throws IllegalDirectoryPathException {
+		if (rootPath == null) {
+			throw new NullPointerException("Illegal parameter, rootPath cannot be null!");
+		}
+
+		String url = rootPath.getUrl();
+		MKLog.d(JackrabbitFileExplorer.class, "JackrabbitFileExplorer: %s", url);
+		mContext = context;
+		mClient = OwnCloudClientFactory.createOwnCloudClient(Uri.parse(rootPath.getBaseUrl()), mContext, true);
+		mClient.setCredentials(OwnCloudCredentialsFactory.newBasicCredentials(rootPath.getUser(), rootPath.getPassword()));
+		mCredentials = rootPath.getCredentials();
+
+		//		if (!executeExistenceCheck(mClient, url, true)) {
+		executeMakeDir(mClient, url, true);
+		//		}
+		RemoteFile remoteFile = executeGetFile(mClient, url, true);
+		if (!remoteFile.isDirectory()) {
+			throw new IllegalDirectoryPathException(url + " is not directory!");
+		}
+		mRootDir = remoteFile;
+		mCurrentDir = remoteFile;
+		MKLog.d(JackrabbitFileExplorer.class, "mRootDir.getUri        : %s", mRootDir.getUri());
+		MKLog.d(JackrabbitFileExplorer.class, "mRootDir.getRemotePath : %s", mRootDir.getRemotePath());
+		MKLog.d(JackrabbitFileExplorer.class, "mRootDir.getParent     : %s", mRootDir.getParent());
+	}
+
+	public static boolean executeExistenceCheck(OwnCloudClient client, String path, boolean absolutePath) {
+
+		HeadMethod head = null;
+		boolean existence = false;
+		String url = absolutePath ? Uri.encode(path, ":/") : client.getWebdavUri() + WebdavUtils.encodePath(path);
+		MKLog.d(JackrabbitFileExplorer.class, "executeExistenceCheck: %s", url);
+
+		try {
+			head = new HeadMethod(url);
+			int status = client.executeMethod(head, EXISTENCE_CHECK_TIMEOUT, EXISTENCE_CHECK_TIMEOUT);
+			client.exhaustResponse(head.getResponseBodyAsStream());
+			existence = (status == HttpStatus.SC_OK);
+			MKLog.d(JackrabbitFileExplorer.class, "executeExistenceCheck: %s, %d, %b", url, status, existence);
+		} catch (HttpException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			if (head != null) {
+				head.releaseConnection();
+			}
+		}
+		MKLog.d(JackrabbitFileExplorer.class, "executeExistenceCheck: %s, %b", url, existence);
+		return existence;
+	}
 
 	public static RemoteFile executeGetFile(OwnCloudClient client, String path, boolean absolutePath) {
 		PropFindMethod propFind = null;
@@ -101,73 +155,6 @@ public class JackrabbitFileExplorer implements FileExplorer {
 		}
 		MKLog.d(JackrabbitFileExplorer.class, "executeGetFile failed");
 		return null;
-	}
-
-	private static String getParentUri(String url) {
-		char separatorChar = '/';
-		StringBuilder builder = new StringBuilder(url);
-		int length = builder.length();
-		if (builder.charAt(length - 1) == separatorChar) {
-			builder.deleteCharAt(length - 1);
-		}
-
-		int index = builder.lastIndexOf(FileUtils.PATH_SEPARATOR);
-		if (index == -1) {
-			return null;
-		}
-		return builder.substring(0, index);
-	}
-
-	public static boolean executeMakeDir(OwnCloudClient client, String path, boolean absolutePath) {
-		MkColMethod mkCol = null;
-		String url = absolutePath ? Uri.encode(path, ":/") : client.getWebdavUri() + WebdavUtils.encodePath(path);
-		MKLog.d(JackrabbitFileExplorer.class, "executeMakeDir: %s", url);
-		try {
-			mkCol = new MkColMethod(url);
-			int status = client.executeMethod(mkCol, MKDIR_READ_TIMEOUT, MKDIR_CONNECTION_TIMEOUT);
-			if (!mkCol.succeeded() && status == HttpStatus.SC_CONFLICT) {
-				if (executeMakeDir(client, getParentUri(path), absolutePath)) {
-					mkCol = new MkColMethod(url);
-					client.executeMethod(mkCol, MKDIR_READ_TIMEOUT, MKDIR_CONNECTION_TIMEOUT);
-				}
-			}
-			MKLog.d(JackrabbitFileExplorer.class, "executeMakeDir %b", mkCol.succeeded());
-			return mkCol.succeeded();
-		} catch (HttpException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		} finally {
-			if (mkCol != null) {
-				mkCol.releaseConnection();
-			}
-		}
-		MKLog.d(JackrabbitFileExplorer.class, "executeMakeDir failed");
-		return false;
-	}
-
-	public JackrabbitFileExplorer(JackrabbitPath rootPath, Context context) throws IllegalDirectoryPathException {
-		if (rootPath == null) {
-			throw new NullPointerException("Illegal parameter, rootPath cannot be null!");
-		}
-
-		String url = rootPath.getUrl();
-		MKLog.d(JackrabbitFileExplorer.class, "JackrabbitFileExplorer: %s", url);
-		mContext = context;
-		mClient = OwnCloudClientFactory.createOwnCloudClient(Uri.parse(rootPath.getBaseUrl()), mContext, true);
-		mClient.setCredentials(OwnCloudCredentialsFactory.newBasicCredentials(rootPath.getUser(), rootPath.getPassword()));
-		mCredentials = rootPath.getCredentials();
-
-		executeMakeDir(mClient, url, true);
-		RemoteFile remoteFile = executeGetFile(mClient, url, true);
-		if (!remoteFile.isDirectory()) {
-			throw new IllegalDirectoryPathException(url + " is not directory!");
-		}
-		mRootDir = remoteFile;
-		mCurrentDir = remoteFile;
-		MKLog.d(JackrabbitFileExplorer.class, "mRootDir.getUri        : %s", mRootDir.getUri());
-		MKLog.d(JackrabbitFileExplorer.class, "mRootDir.getRemotePath : %s", mRootDir.getRemotePath());
-		MKLog.d(JackrabbitFileExplorer.class, "mRootDir.getParent     : %s", mRootDir.getParent());
 	}
 
 	private static List<RemoteFile> readData(MultiStatus remoteData, OwnCloudClient client) {
@@ -213,6 +200,16 @@ public class JackrabbitFileExplorer implements FileExplorer {
 		return fileList;
 	}
 
+	@Override
+	public boolean isRoot() {
+		MKLog.d(JackrabbitFileExplorer.class, "isRoot; %s, %s", mRootDir.getRemotePath(), mCurrentDir.getRemotePath());
+		return mRootDir.getRemotePath().equals(mCurrentDir.getRemotePath());
+	}
+
+	@Override
+	public FileInfo getRootPath() {
+		return JackrabbitFileInfo.create(mRootDir);
+	}
 
 	private static PathType diagnosePathType(String path) {
 		path = path.trim();
@@ -240,10 +237,6 @@ public class JackrabbitFileExplorer implements FileExplorer {
 		mCurrentDir = dir;
 	}
 
-	private void changeDirToRoot() {
-		updatePwd(mRootDir);
-	}
-
 	private void changeDirToParent() throws AccessViolationException {
 		if (isRoot()) {
 			return;
@@ -258,6 +251,10 @@ public class JackrabbitFileExplorer implements FileExplorer {
 		} catch (Exception e) {
 			throw new AccessViolationException("Strange! Current path's parent : " + parent + ", is not directory!", e);
 		}
+	}
+
+	private void changeDirToRoot() {
+		updatePwd(mRootDir);
 	}
 
 	private boolean isCurrentPathValid(String current) {
@@ -283,17 +280,6 @@ public class JackrabbitFileExplorer implements FileExplorer {
 		MKLog.d(JackrabbitFileExplorer.class, "retrieveUrlByBase: %s, %s", path,
 				PathUtil.retrieve(path.startsWith("/") ? root : current, path));
 		return PathUtil.retrieve(path.startsWith("/") ? root : current, path);
-	}
-
-	@Override
-	public boolean isRoot() {
-		MKLog.d(JackrabbitFileExplorer.class, "isRoot; %s, %s", mRootDir.getRemotePath(), mCurrentDir.getRemotePath());
-		return mRootDir.getRemotePath().equals(mCurrentDir.getRemotePath());
-	}
-
-	@Override
-	public FileInfo getRootPath() {
-		return JackrabbitFileInfo.create(mRootDir);
 	}
 
 	@Override
@@ -393,6 +379,49 @@ public class JackrabbitFileExplorer implements FileExplorer {
 		}
 	}
 
+	private static String getParentUri(String url) {
+		char separatorChar = '/';
+		StringBuilder builder = new StringBuilder(url);
+		int length = builder.length();
+		if (builder.charAt(length - 1) == separatorChar) {
+			builder.deleteCharAt(length - 1);
+		}
+
+		int index = builder.lastIndexOf(FileUtils.PATH_SEPARATOR);
+		if (index == -1) {
+			return null;
+		}
+		return builder.substring(0, index);
+	}
+
+	public static boolean executeMakeDir(OwnCloudClient client, String path, boolean absolutePath) {
+		MkColMethod mkCol = null;
+		String url = absolutePath ? Uri.encode(path, ":/") : client.getWebdavUri() + WebdavUtils.encodePath(path);
+		MKLog.d(JackrabbitFileExplorer.class, "executeMakeDir: %s", url);
+		try {
+			mkCol = new MkColMethod(url);
+			int status = client.executeMethod(mkCol, MKDIR_READ_TIMEOUT, MKDIR_CONNECTION_TIMEOUT);
+			if (!mkCol.succeeded() && status == HttpStatus.SC_CONFLICT) {
+				if (executeMakeDir(client, getParentUri(path), absolutePath)) {
+					mkCol = new MkColMethod(url);
+					client.executeMethod(mkCol, MKDIR_READ_TIMEOUT, MKDIR_CONNECTION_TIMEOUT);
+				}
+			}
+			MKLog.d(JackrabbitFileExplorer.class, "executeMakeDir %b", mkCol.succeeded());
+			return mkCol.succeeded();
+		} catch (HttpException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			if (mkCol != null) {
+				mkCol.releaseConnection();
+			}
+		}
+		MKLog.d(JackrabbitFileExplorer.class, "executeMakeDir failed");
+		return false;
+	}
+
 	private boolean makeDirWithAbsoluteUrl(String url) throws DirectoryAlreadyExistsException {
 		RemoteFile dir = executeGetFile(mClient, url, true);
 		if (dir != null) {
@@ -457,7 +486,7 @@ public class JackrabbitFileExplorer implements FileExplorer {
 	}
 
 	@Override
-	public boolean rm(String path) throws AccessViolationException, NoSuchFileException {
+	public boolean rm(String path) throws AccessViolationException {
 		if (path == null || path.length() == 0) {
 			return false;
 		}
@@ -625,6 +654,7 @@ public class JackrabbitFileExplorer implements FileExplorer {
 		return !(src == null || src.length() == 0) && !(dest == null || dest.length() == 0) && moveSrcToDest(src, dest, true);
 	}
 
+
 	public static boolean executeRename(OwnCloudClient client, String oldName, String newName, boolean absolutePath) {
 		boolean result = false;
 		String oldUrl = absolutePath ? Uri.encode(oldName, ":/") : client.getWebdavUri() + WebdavUtils.encodePath(oldName);
@@ -673,59 +703,59 @@ public class JackrabbitFileExplorer implements FileExplorer {
 	@Override
 	public boolean renameFileOrDir(String old, String newName)
 		throws AccessViolationException, PathNotFoundException, IllegalDirectoryPathException, NoSuchFileException {
-			String srcUrl, destUrl;
-			switch (diagnosePathType(old)) {
-				case CURRENT:
-				case PARENT:
-				case HOME:
-					return false;
-				case HTTP:
-					if (isCurrentPathValid(PathUtil.retrieve(old, ".."))) {
-						srcUrl = old;
-					} else {
-						throw new AccessViolationException("Illegal src, you cannot copy " + old + " to anywhere!");
-					}
-					break;
-				case ROOT_BASE:
-				case PARENT_BASE:
-				case CURRENT_BASE:
-					srcUrl = retrieveUrlByBase(old);
-					if (!isCurrentPathValid(srcUrl)) {
-						throw new AccessViolationException("Illegal src, you cannot copy " + srcUrl + " to anywhere!");
-					}
-					break;
-				case INVALID:
-				default:
-					return false;
-			}
-			switch (diagnosePathType(newName)) {
-				case CURRENT:
-				case PARENT:
-				case HOME:
-					return false;
-				case HTTP:
-					if (isCurrentPathValid(PathUtil.retrieve(newName, ".."))) {
-						destUrl = newName;
-					} else {
-						throw new AccessViolationException("Illegal dest, you cannot copy things to " + newName);
-					}
-					break;
-				case ROOT_BASE:
-				case PARENT_BASE:
-				case CURRENT_BASE:
-					destUrl = retrieveUrlByBase(newName);
-					if (!isCurrentPathValid(destUrl)) {
-						throw new AccessViolationException("Illegal dest, you cannot copy things to " + destUrl);
-					}
-					break;
-				case INVALID:
-				default:
-					return false;
-			}
+		String srcUrl, destUrl;
+		switch (diagnosePathType(old)) {
+			case CURRENT:
+			case PARENT:
+			case HOME:
+				return false;
+			case HTTP:
+				if (isCurrentPathValid(PathUtil.retrieve(old, ".."))) {
+					srcUrl = old;
+				} else {
+					throw new AccessViolationException("Illegal src, you cannot copy " + old + " to anywhere!");
+				}
+				break;
+			case ROOT_BASE:
+			case PARENT_BASE:
+			case CURRENT_BASE:
+				srcUrl = retrieveUrlByBase(old);
+				if (!isCurrentPathValid(srcUrl)) {
+					throw new AccessViolationException("Illegal src, you cannot copy " + srcUrl + " to anywhere!");
+				}
+				break;
+			case INVALID:
+			default:
+				return false;
+		}
+		switch (diagnosePathType(newName)) {
+			case CURRENT:
+			case PARENT:
+			case HOME:
+				return false;
+			case HTTP:
+				if (isCurrentPathValid(PathUtil.retrieve(newName, ".."))) {
+					destUrl = newName;
+				} else {
+					throw new AccessViolationException("Illegal dest, you cannot copy things to " + newName);
+				}
+				break;
+			case ROOT_BASE:
+			case PARENT_BASE:
+			case CURRENT_BASE:
+				destUrl = retrieveUrlByBase(newName);
+				if (!isCurrentPathValid(destUrl)) {
+					throw new AccessViolationException("Illegal dest, you cannot copy things to " + destUrl);
+				}
+				break;
+			case INVALID:
+			default:
+				return false;
+		}
 
-			MKLog.d(JackrabbitFileExplorer.class, "srcUrl:" + srcUrl);
-			MKLog.d(JackrabbitFileExplorer.class, "destUrl:" + destUrl);
+//		MKLog.d(SambaFileExplorer.class, "srcUrl:" + srcUrl);
+//		MKLog.d(SambaFileExplorer.class, "destUrl:" + destUrl);
 
-			return executeRename(mClient, srcUrl, destUrl, true);
+		return executeRename(mClient, srcUrl, destUrl, true);
 	}
 }
