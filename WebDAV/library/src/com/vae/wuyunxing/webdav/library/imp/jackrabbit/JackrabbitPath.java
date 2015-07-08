@@ -2,8 +2,8 @@ package com.vae.wuyunxing.webdav.library.imp.jackrabbit;
 
 import com.vae.wuyunxing.webdav.library.config.LibraryConfig;
 
-import org.apache.http.auth.Credentials;
-import org.apache.http.auth.UsernamePasswordCredentials;
+import org.apache.commons.httpclient.Credentials;
+import org.apache.commons.httpclient.UsernamePasswordCredentials;
 
 import java.io.File;
 
