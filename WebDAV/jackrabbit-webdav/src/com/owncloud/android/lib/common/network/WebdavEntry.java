@@ -87,20 +87,30 @@ public class WebdavEntry {
             }
 
             prop = propSet.get(DavPropertyName.GETCONTENTLENGTH);
-            if (prop != null)
-                mContentLength = Long.parseLong((String) prop.getValue());
+            if (prop != null) {
+                if (null != prop.getValue()) {
+                    mContentLength = Long.parseLong((String) prop.getValue());
+                }
+            }
+
 
             prop = propSet.get(DavPropertyName.GETLASTMODIFIED);
             if (prop != null) {
-                Date d = WebdavUtils
-                        .parseResponseDate((String) prop.getValue());
+                Date d = null;
+                if (null != prop.getValue()) {
+                    d = WebdavUtils
+                            .parseResponseDate((String) prop.getValue());
+                }
                 mModifiedTimestamp = (d != null) ? d.getTime() : 0;
             }
 
             prop = propSet.get(DavPropertyName.CREATIONDATE);
             if (prop != null) {
-                Date d = WebdavUtils
-                        .parseResponseDate((String) prop.getValue());
+                Date d = null;
+                if (null != prop.getValue()) {
+                    d = WebdavUtils
+                            .parseResponseDate((String) prop.getValue());
+                }
                 mCreateTimestamp = (d != null) ? d.getTime() : 0;
             }
 

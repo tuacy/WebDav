@@ -276,11 +276,11 @@ public class RemoteFileListFragment extends Fragment {
 	}
 
 	private JackrabbitPath getJackrabbitPath(String password) {
-		String domain = "192.168.11.1";
+		String domain = "192.168.1.5";
 		String sambaUser = "root";
 		String currentUser = "hardy";
 		String userStoragePath = "Home";
-		String path = PathUtil.appendPath(true, JackrabbitPath.MOUNT_DIR, userStoragePath, currentUser);
+		String path = PathUtil.appendPath(true, "Screenshots");
 		return new JackrabbitPath(domain, path, sambaUser, password);
 	}
 
