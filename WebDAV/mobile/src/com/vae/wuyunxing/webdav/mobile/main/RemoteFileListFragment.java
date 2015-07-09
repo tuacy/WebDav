@@ -178,20 +178,20 @@ public class RemoteFileListFragment extends Fragment {
 				mDispFileList = null;
 				return null;
 			}
-		}, Task.UI_THREAD_EXECUTOR).continueWith(new Continuation<Void, Void>() {
+		}, Task.UI_THREAD_EXECUTOR).continueWith(new Continuation<Void, Boolean>() {
 			@Override
-			public Void then(Task<Void> task) throws Exception {
+			public Boolean then(Task<Void> task) throws Exception {
 				String password = "admin";
 				if (mFileExplorer == null) {
 					JackrabbitPath path = getJackrabbitPath(password);
 					mFileExplorer = FileBrowserFactory.createJackrabbitFileExplorer(path, mContext);
 				}
-				return null;
+				return true;
 			}
-		}, Task.BACKGROUND_EXECUTOR).continueWith(new Continuation<Void, Void>() {
+		}, Task.BACKGROUND_EXECUTOR).continueWith(new Continuation<Boolean, Void>() {
 			@Override
-			public Void then(Task<Void> task) throws Exception {
-				if (task.isCompleted()) {
+			public Void then(Task<Boolean> task) throws Exception {
+				if (task.isCompleted() && task.getResult()) {
 					getAndDisplayFileList(".");
 				} else {
 					updateFileListView(mDispFileList);
@@ -276,7 +276,7 @@ public class RemoteFileListFragment extends Fragment {
 	}
 
 	private JackrabbitPath getJackrabbitPath(String password) {
-		String domain = "192.168.1.5";
+		String domain = "192.168.11.104";
 		String sambaUser = "root";
 		String currentUser = "hardy";
 		String userStoragePath = "Home";
