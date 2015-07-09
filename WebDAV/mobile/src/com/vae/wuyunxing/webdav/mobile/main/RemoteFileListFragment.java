@@ -3,6 +3,7 @@ package com.vae.wuyunxing.webdav.mobile.main;
 import android.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,7 @@ import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.vae.wuyunxing.commomui.widget.CommonDialog;
 import com.vae.wuyunxing.webdav.library.FileBrowserFactory;
 import com.vae.wuyunxing.webdav.library.FileCategory;
 import com.vae.wuyunxing.webdav.library.FileExplorer;
@@ -24,6 +26,7 @@ import com.vae.wuyunxing.webdav.mobile.MobileBaseActivity;
 import com.vae.wuyunxing.webdav.mobile.R;
 import com.vae.wuyunxing.webdav.mobile.main.message.BackParentEvent;
 import com.vae.wuyunxing.webdav.mobile.main.message.CreateFileEvent;
+import com.vae.wuyunxing.webdav.mobile.main.message.DeleteRemoteFileEvent;
 import com.vae.wuyunxing.webdav.mobile.main.message.DirChangedEvent;
 import com.vae.wuyunxing.webdav.mobile.main.message.EditCheckAllEvent;
 import com.vae.wuyunxing.webdav.mobile.main.message.EditSelectionEvent;
@@ -168,12 +171,12 @@ public class RemoteFileListFragment extends Fragment {
 
 	private void initPtrFrameLayout(PtrFrameLayout ptrFrame) {
 		ptrFrame.setPtrHandler(new PtrDefaultHandler() {
-			@Override
-			public void onRefreshBegin(PtrFrameLayout ptrFrameLayout) {
-				refreshBegin();
-				updateCurrentFileList();
-			}
-		});
+            @Override
+            public void onRefreshBegin(PtrFrameLayout ptrFrameLayout) {
+                refreshBegin();
+                updateCurrentFileList();
+            }
+        });
 	}
 
 	/**
@@ -323,7 +326,7 @@ public class RemoteFileListFragment extends Fragment {
 	 * @return
 	 */
 	private JackrabbitPath getJackrabbitPath(String password) {
-		String domain = "192.168.31.153";
+		String domain = "192.168.1.6";
 		String sambaUser = "root";
 		String currentUser = "hardy";
 		String userStoragePath = "Home";
@@ -377,6 +380,82 @@ public class RemoteFileListFragment extends Fragment {
 		return newSorter;
 	}
 
+    private int getCurrentSelectNum() {
+        int selectItem = 0;
+        if (!mIsInEditMode) {
+            return selectItem;
+        }
+
+        for (FileInfo fileInfo : mDispFileList) {
+            int hash = fileInfo.getName().hashCode();
+            if (mSelections.contains(hash)) {
+                selectItem++;
+            }
+        }
+        return selectItem;
+    }
+
+    private void showDeleteDialog() {
+        final CommonDialog deleteDialog = new CommonDialog(getActivity(), R.style.Dialog);
+        TextView textTips = new TextView(getActivity());
+        textTips.setText(R.string.str_delete_notice);
+        deleteDialog.setView(textTips);
+        deleteDialog.setTitleText(R.string.str_delete);
+        deleteDialog.setTitleTextColor(getResources().getColor(R.color.white));
+        deleteDialog.setTitleBackground(R.drawable.dialog_title_blue);
+        deleteDialog.setPositiveButtonBackground(R.drawable.dialog_button_selector);
+        deleteDialog.setPositiveButtonTextColor(getResources().getColor(R.color.black_80alpha));
+        deleteDialog.setNegativeButtonTextColor(getResources().getColor(R.color.black_80alpha));
+        deleteDialog.setNegativeButtonBackground(R.drawable.dialog_button_selector);
+        deleteDialog.setPositiveButton(R.string.ok, new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                deleteDialog.cancel();
+                startDeleteFiles();
+            }
+
+        });
+        deleteDialog.setNegativeButton(R.string.cancel, new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                deleteDialog.cancel();
+            }
+        });
+        deleteDialog.show();
+    }
+
+    private void startDeleteFiles() {
+        Task.call(new Callable<Void>() {
+            @Override
+            public Void call() throws Exception {
+                ((MobileBaseActivity) getActivity()).showWaitingDialog();
+
+                return null;
+            }
+        }, Task.UI_THREAD_EXECUTOR).onSuccess(new Continuation<Void, Void>() {
+            @Override
+            public Void then(Task<Void> task) throws Exception {
+                for (FileInfo fileInfo : mDispFileList) {
+                    int hash = fileInfo.getName().hashCode();
+                    if (mSelections.contains(hash)) {
+                        mFileExplorer.rm(fileInfo.getName());
+                    }
+                }
+                return null;
+            }
+        }, Task.BACKGROUND_EXECUTOR).continueWith(new Continuation<Void, Void>() {
+            @Override
+            public Void then(Task<Void> task) throws Exception {
+                ((MobileBaseActivity) getActivity()).dismissWaitingDialog();
+                EventBus.getDefault().post(new ExitEditModeEvent());
+                getAndDisplayFileList(".");
+                return null;
+            }
+        }, Task.UI_THREAD_EXECUTOR);
+    }
+
 	/*** view operation  **/
 	@OnItemClick(R.id.drive_browser_file_list)
 	void fileClick(int position) {
@@ -394,6 +473,7 @@ public class RemoteFileListFragment extends Fragment {
 		} else {
 			FileInfo file = (FileInfo) mListView.getAdapter().getItem(position);
 			if (file.isDir()) {
+                Log.d("vae_tag", file.getName());
 				getAndDisplayFileList(file.getName());
 			} else {
 				EventBus.getDefault().post(new PlayFileEvent(file.getUri()));
@@ -508,5 +588,11 @@ public class RemoteFileListFragment extends Fragment {
 			}
 		}, Task.UI_THREAD_EXECUTOR);
 	}
+
+    public void onEventMainThread(DeleteRemoteFileEvent event) {
+        if (getCurrentSelectNum() > 0) {
+            showDeleteDialog();
+        }
+    }
 
 }
