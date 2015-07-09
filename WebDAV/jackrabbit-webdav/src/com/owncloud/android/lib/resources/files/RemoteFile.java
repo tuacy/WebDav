@@ -137,7 +137,14 @@ public class RemoteFile implements Parcelable, Serializable {
 
 	public String getName() {
 		int separatorIndex = mRemotePath.lastIndexOf(FileUtils.PATH_SEPARATOR);
-		return (separatorIndex < 0) ? mRemotePath : mRemotePath.substring(separatorIndex + 1, mRemotePath.length());
+		if (separatorIndex == mRemotePath.length() - 1) {
+			/** last index is "/" then remove the last "/" */
+			String remotePathTemp = mRemotePath.substring(0, mRemotePath.length() - 1);
+			int separatorIndexTemp = remotePathTemp.lastIndexOf(FileUtils.PATH_SEPARATOR);
+			return (separatorIndexTemp < 0) ? remotePathTemp : remotePathTemp.substring(separatorIndexTemp + 1, remotePathTemp.length());
+		} else {
+			return (separatorIndex < 0) ? mRemotePath : mRemotePath.substring(separatorIndex + 1, mRemotePath.length());
+		}
 	}
 
 	public String getParent() {
