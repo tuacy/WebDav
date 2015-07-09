@@ -38,6 +38,8 @@
             </intent-filter>
         </activity>
 
+        <service android:name="com.vae.wuyunxing.webdav.library.play.webdav.WebDAVFilePlayService" />
+
     </application>
 
 </manifest>

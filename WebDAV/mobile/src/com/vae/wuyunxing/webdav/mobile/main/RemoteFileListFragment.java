@@ -3,7 +3,6 @@ package com.vae.wuyunxing.webdav.mobile.main;
 import android.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,22 +14,30 @@ import com.vae.wuyunxing.webdav.library.FileBrowserFactory;
 import com.vae.wuyunxing.webdav.library.FileCategory;
 import com.vae.wuyunxing.webdav.library.FileExplorer;
 import com.vae.wuyunxing.webdav.library.FileInfo;
+import com.vae.wuyunxing.webdav.library.exception.DirectoryAlreadyExistsException;
 import com.vae.wuyunxing.webdav.library.filter.FileFilter;
 import com.vae.wuyunxing.webdav.library.imp.jackrabbit.JackrabbitPath;
-import com.vae.wuyunxing.webdav.library.log.MKLog;
 import com.vae.wuyunxing.webdav.library.sort.FileSorter;
 import com.vae.wuyunxing.webdav.library.util.FileUtil;
 import com.vae.wuyunxing.webdav.library.util.PathUtil;
 import com.vae.wuyunxing.webdav.mobile.MobileBaseActivity;
 import com.vae.wuyunxing.webdav.mobile.R;
+import com.vae.wuyunxing.webdav.mobile.main.message.BackParentEvent;
 import com.vae.wuyunxing.webdav.mobile.main.message.CreateFileEvent;
 import com.vae.wuyunxing.webdav.mobile.main.message.DirChangedEvent;
+import com.vae.wuyunxing.webdav.mobile.main.message.EditCheckAllEvent;
+import com.vae.wuyunxing.webdav.mobile.main.message.EditSelectionEvent;
+import com.vae.wuyunxing.webdav.mobile.main.message.EnterEditModeEvent;
+import com.vae.wuyunxing.webdav.mobile.main.message.ExitEditModeEvent;
 import com.vae.wuyunxing.webdav.mobile.main.message.FilterFileEvent;
+import com.vae.wuyunxing.webdav.mobile.main.message.PlayFileEvent;
 import com.vae.wuyunxing.webdav.mobile.main.message.SortFileEvent;
 
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.Callable;
 
 import bolts.Continuation;
@@ -40,6 +47,8 @@ import butterknife.InjectView;
 
 import de.greenrobot.event.EventBus;
 
+import butterknife.OnItemClick;
+import butterknife.OnItemLongClick;
 import in.srain.cube.views.ptr.PtrDefaultHandler;
 import in.srain.cube.views.ptr.PtrFrameLayout;
 
@@ -60,17 +69,24 @@ public class RemoteFileListFragment extends Fragment {
 	/**
 	 * Explorer
 	 */
-	private FileExplorer   mFileExplorer;
-	private List<FileInfo> mCurDirFileList;
-	private List<FileInfo> mDispFileList;
+	private FileExplorer   mFileExplorer   = null;
+	/** current directory file list */
+	private List<FileInfo> mCurDirFileList = null;
+	/** display file list (current directory file list sort) */
+	private List<FileInfo> mDispFileList   = null;
 
 	/**
 	 * state
 	 */
 	private boolean    mIsRefreshing = false;
 	private boolean    mIsInEditMode = false;
+	/** filter type */
 	private int        mFilterType   = FilterFileEvent.FILTER_TYPE_ALL;
+	/** sorter type */
 	private FileSorter mSorter       = FileSorter.FILE_NAME_ASCENDING;
+
+	/** Selections */
+	private final Set<Integer> mSelections = new HashSet<Integer>();
 
 	private Context mContext;
 
@@ -194,13 +210,19 @@ public class RemoteFileListFragment extends Fragment {
 				if (task.isCompleted() && task.getResult()) {
 					getAndDisplayFileList(".");
 				} else {
+					/** exception */
 					updateFileListView(mDispFileList);
+					mFileExplorer = null;
 				}
 				return null;
 			}
 		}, Task.UI_THREAD_EXECUTOR);
 	}
 
+	/**
+	 * get the remote file list and display in ListView
+	 * @param path
+	 */
 	private void getAndDisplayFileList(final String path) {
 		Task.call(new Callable<Void>() {
 			@Override
@@ -215,8 +237,11 @@ public class RemoteFileListFragment extends Fragment {
 		}, Task.UI_THREAD_EXECUTOR).continueWith(new Continuation<Void, List<FileInfo>>() {
 			@Override
 			public List<FileInfo> then(Task<Void> task) throws Exception {
+				/** cd (goto path)*/
 				mFileExplorer.cd(path);
+				/** ls (get the file list)*/
 				mCurDirFileList = mFileExplorer.ls("-l");
+				/** sort and filter */
 				return sortAndFilterFiles(mCurDirFileList);
 			}
 		}, Task.BACKGROUND_EXECUTOR).continueWith(new Continuation<List<FileInfo>, Void>() {
@@ -236,10 +261,21 @@ public class RemoteFileListFragment extends Fragment {
 		}, Task.UI_THREAD_EXECUTOR);
 	}
 
+	/**
+	 * Sort and filter the list
+	 * @param all
+	 * @return
+	 */
 	private List<FileInfo> sortAndFilterFiles(final List<FileInfo> all) {
 		return sortFiles(filterFiles(all, mFilterType), mSorter);
 	}
 
+	/**
+	 * filter
+	 * @param all
+	 * @param filterType
+	 * @return
+	 */
 	private List<FileInfo> filterFiles(List<FileInfo> all, int filterType) {
 		FileFilter filter;
 		switch (filterType) {
@@ -269,14 +305,25 @@ public class RemoteFileListFragment extends Fragment {
 		return FileUtil.filter(all, filter);
 	}
 
+	/**
+	 * sorte
+	 * @param list
+	 * @param sorter
+	 * @return
+	 */
 	private List<FileInfo> sortFiles(final List<FileInfo> list, final FileSorter sorter) {
 		final Comparator<FileInfo> comparator = sorter.getSorter();
 		Collections.sort(list, comparator);
 		return list;
 	}
 
+	/**
+	 * get jackrabbit path
+	 * @param password
+	 * @return
+	 */
 	private JackrabbitPath getJackrabbitPath(String password) {
-		String domain = "192.168.11.104";
+		String domain = "192.168.31.153";
 		String sambaUser = "root";
 		String currentUser = "hardy";
 		String userStoragePath = "Home";
@@ -284,23 +331,182 @@ public class RemoteFileListFragment extends Fragment {
 		return new JackrabbitPath(domain, path, sambaUser, password);
 	}
 
-	/**
-	 * filter file event
-	 */
+	private void postSelectionEvent(int selection, int total) {
+		EventBus.getDefault().post(new EditSelectionEvent(selection, total));
+	}
+
+	void exitEditMode() {
+		mIsInEditMode = false;
+
+		mSelections.clear();
+		((FileListAdapter) mListView.getAdapter()).clearEditMode();
+	}
+
+	private FileSorter updateSorter(FileSorter oldSorter, int sortType) {
+		FileSorter newSorter = null;
+		switch (sortType) {
+			case MainActivity.SORT_TYPE_FILE_NAME:
+				if (oldSorter == FileSorter.FILE_NAME_ASCENDING) {
+					newSorter = FileSorter.FILE_NAME_DESCENDING;
+				} else {
+					newSorter = FileSorter.FILE_NAME_ASCENDING;
+				}
+				break;
+			case MainActivity.SORT_TYPE_FILE_SIZE:
+				if (oldSorter == FileSorter.FILE_SIZE_ASCENDING) {
+					newSorter = FileSorter.FILE_SIZE_DESCENDING;
+				} else {
+					newSorter = FileSorter.FILE_SIZE_ASCENDING;
+				}
+				break;
+			case MainActivity.SORT_TYPE_DATE:
+				if (oldSorter == FileSorter.FILE_DATE_ASCENDING) {
+					newSorter = FileSorter.FILE_DATE_DESCENDING;
+				} else {
+					newSorter = FileSorter.FILE_DATE_ASCENDING;
+				}
+				break;
+			case MainActivity.SORT_TYPE_SUFFIX:
+				if (oldSorter == FileSorter.FILE_SUFFIX_ASCENDING) {
+					newSorter = FileSorter.FILE_SUFFIX_DESCENDING;
+				} else {
+					newSorter = FileSorter.FILE_SUFFIX_ASCENDING;
+				}
+				break;
+		}
+		return newSorter;
+	}
+
+	/*** view operation  **/
+	@OnItemClick(R.id.drive_browser_file_list)
+	void fileClick(int position) {
+		if (mIsInEditMode) {
+			FileListAdapter adapter = (FileListAdapter) mListView.getAdapter();
+			int hash = ((FileInfo) adapter.getItem(position)).getName().hashCode();
+			if (mSelections.contains(hash)) {
+				mSelections.remove(hash);
+			} else {
+				mSelections.add(hash);
+			}
+			adapter.notifyDataSetChanged();
+
+			postSelectionEvent(mSelections.size(), mCurDirFileList.size());
+		} else {
+			FileInfo file = (FileInfo) mListView.getAdapter().getItem(position);
+			if (file.isDir()) {
+				getAndDisplayFileList(file.getName());
+			} else {
+				EventBus.getDefault().post(new PlayFileEvent(file.getUri()));
+			}
+		}
+	}
+
+
+	@OnItemLongClick(R.id.drive_browser_file_list)
+	boolean enterEditMode(int position) {
+		mIsInEditMode = true;
+
+		FileInfo file = (FileInfo) mListView.getAdapter().getItem(position);
+		mSelections.add(file.getName().hashCode());
+		((FileListAdapter) mListView.getAdapter()).setEditMode(mSelections);
+
+		EventBus.getDefault().post(new EnterEditModeEvent());
+
+		return true;
+	}
+
+	/** EventBus event **/
+	public void onEventMainThread(BackParentEvent event) {
+		if (mIsInEditMode) {
+			EventBus.getDefault().post(new ExitEditModeEvent());
+		} else if (mFileExplorer == null || mFileExplorer.isRoot()) {
+			getActivity().onBackPressed();
+		} else {
+			getAndDisplayFileList("..");
+		}
+	}
+
+	public void onEventMainThread(ExitEditModeEvent event) {
+		exitEditMode();
+	}
+
+	public void onEventMainThread(EditCheckAllEvent event) {
+		if (mIsInEditMode) {
+			if (event.mIsCheckAll) {
+				for (FileInfo file : mCurDirFileList) {
+					mSelections.add(file.getName().hashCode());
+				}
+			} else {
+				mSelections.clear();
+			}
+			((FileListAdapter) mListView.getAdapter()).notifyDataSetChanged();
+
+			postSelectionEvent(mSelections.size(), mCurDirFileList.size());
+		}
+	}
+
 	public void onEventMainThread(FilterFileEvent event) {
-		MKLog.d(RemoteFileListFragment.class, "get filter event");
+		if (!event.mIsLocalFileFilterEvent) {
+			mFilterType = event.mCategory;
+			Task.callInBackground(new Callable<List<FileInfo>>() {
+				@Override
+				public List<FileInfo> call() throws Exception {
+					return sortAndFilterFiles(mCurDirFileList);
+				}
+			}).onSuccess(new Continuation<List<FileInfo>, Void>() {
+				@Override
+				public Void then(Task<List<FileInfo>> task) throws Exception {
+					mDispFileList = task.getResult();
+					updateFileListView(mDispFileList);
+					return null;
+				}
+			}, Task.UI_THREAD_EXECUTOR);
+		}
 	}
 
-	/**
-	 * sort file event
-	 */
 	public void onEventMainThread(SortFileEvent event) {
+		mSorter = updateSorter(mSorter, event.mSortType);
+		Task.callInBackground(new Callable<List<FileInfo>>() {
+			@Override
+			public List<FileInfo> call() throws Exception {
+				return sortFiles(((FileListAdapter) mListView.getAdapter()).getFileList(), mSorter);
+			}
+		}).onSuccess(new Continuation<List<FileInfo>, Void>() {
+			@Override
+			public Void then(Task<List<FileInfo>> task) throws Exception {
+				mDispFileList = task.getResult();
+				updateFileListView(mDispFileList);
+				return null;
+			}
+		}, Task.UI_THREAD_EXECUTOR);
 	}
 
-	/**
-	 * create new file event
-	 */
 	public void onEventMainThread(CreateFileEvent event) {
+		final String filename = event.mFilename;
+		Task.callInBackground(new Callable<Boolean>() {
+			@Override
+			public Boolean call() throws Exception {
+				return mFileExplorer != null && mFileExplorer.mkdir(filename);
+			}
+		}).continueWith(new Continuation<Boolean, Void>() {
+			@SuppressWarnings("ThrowableResultOfMethodCallIgnored")
+			@Override
+			public Void then(Task<Boolean> task) throws Exception {
+				if (task.isFaulted()) {
+					if (task.getError() instanceof DirectoryAlreadyExistsException) {
+						((MobileBaseActivity) getActivity()).toasts(getString(R.string.directory_already_exists, filename));
+					}
+				} else {
+					if (task.getResult()) {
+						getAndDisplayFileList(".");
+					} else {
+						((MobileBaseActivity) getActivity()).toasts(getString(R.string.new_folder_fail));
+					}
+				}
+
+				return null;
+			}
+		}, Task.UI_THREAD_EXECUTOR);
 	}
 
 }
