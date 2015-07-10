@@ -153,7 +153,7 @@ public class JackrabbitFileExplorer implements FileExplorer {
 	 * Get remote file
 	 * @param client: client
 	 * @param path: path
-	 * @param absolutePath: true(eg: path = ), false(eg: path = )
+	 * @param absolutePath: true(eg: path = http://192.168.1.6:8080/Screenshots/), false(eg: path = /Screenshots/)
 	 * @return
 	 */
 	public static RemoteFile executeGetFile(OwnCloudClient client, String path, boolean absolutePath) {
@@ -336,7 +336,7 @@ public class JackrabbitFileExplorer implements FileExplorer {
 	private void changeDirToAbsoluteUrl(String path) throws IllegalDirectoryPathException, PathNotFoundException {
 		RemoteFile remoteFile;
 		try {
-			remoteFile = executeGetFile(mClient, path, true);
+			remoteFile = executeGetFile(mClient, path, false);
 		} catch (Exception e) {
 			throw new PathNotFoundException("Cannot found directory " + path);
 		}
@@ -477,7 +477,7 @@ public class JackrabbitFileExplorer implements FileExplorer {
 	 * mkdir (if the file exits will return false, other will mkdir it and return true)
 	 * @param client: OwnCloudClient
 	 * @param path: String
-	 * @param absolutePath: boolean
+	 * @param absolutePath: boolean(absolute url eg: paht = http://192.168.1.6:8080/Screenshots/ not absolute url eg: path = /Screenshots/)
 	 * @return
 	 */
 	public static boolean executeMakeDir(OwnCloudClient client, String path, boolean absolutePath) {
@@ -515,12 +515,12 @@ public class JackrabbitFileExplorer implements FileExplorer {
 	 * @throws DirectoryAlreadyExistsException
 	 */
 	private boolean makeDirWithAbsoluteUrl(String url) throws DirectoryAlreadyExistsException {
-		RemoteFile dir = executeGetFile(mClient, url, true);
+		RemoteFile dir = executeGetFile(mClient, url, false);
 		if (dir != null) {
 			throw new DirectoryAlreadyExistsException(url + " is already exists!");
 		}
 
-		return executeMakeDir(mClient, url, true);
+		return executeMakeDir(mClient, url, false);
 	}
 
 	@Override
@@ -606,7 +606,7 @@ public class JackrabbitFileExplorer implements FileExplorer {
 			case CURRENT_BASE:
 				String url = retrieveUrlByBase(path);
 				if (isCurrentPathValid(url)) {
-					return executeRemoveDirOrFile(mClient, url, true);
+					return executeRemoveDirOrFile(mClient, url, false);
 				} else {
 					throw new AccessViolationException("Illegal path, you cannot remove directory " + url);
 				}
