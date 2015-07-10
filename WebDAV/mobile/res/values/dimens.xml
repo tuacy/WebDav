@@ -72,4 +72,6 @@
     <!-- Dialog -->
     <dimen name="dialog_edit_shape_width">1dp</dimen>
     <dimen name="dialog_edit_shape_radius">15dp</dimen>
+
+    <dimen name="limited_button_shape_mini_width_height">0dp</dimen>
 </resources>

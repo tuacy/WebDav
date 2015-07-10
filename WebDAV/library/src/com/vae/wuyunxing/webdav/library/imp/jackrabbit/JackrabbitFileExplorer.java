@@ -159,7 +159,14 @@ public class JackrabbitFileExplorer implements FileExplorer {
 	public static RemoteFile executeGetFile(OwnCloudClient client, String path, boolean absolutePath) {
 		PropFindMethod propFind = null;
 		/** get absolute path */
-		String url = absolutePath ? Uri.encode(path, ":/") : client.getWebdavUri() + WebdavUtils.encodePath(path);
+		/** fix bug some WebDAV server mCurrentDir.getUri() return with out http://192........ **/
+		String url = null;
+		if (path.startsWith(client.getWebdavUri().toString())) {
+			url = Uri.encode(path, ":/");
+		} else {
+			url = client.getWebdavUri() + WebdavUtils.encodePath(path);
+		}
+//		String url = absolutePath ? Uri.encode(path, ":/") : client.getWebdavUri() + WebdavUtils.encodePath(path);
 		MKLog.d(JackrabbitFileExplorer.class, "executeGetFile: %s", url);
 		try {
 			int status;
@@ -220,7 +227,13 @@ public class JackrabbitFileExplorer implements FileExplorer {
 		List<RemoteFile> fileList = null;
 
 		/** get absolute path */
-		String url = absolutePath ? Uri.encode(path, ":/") : client.getWebdavUri() + WebdavUtils.encodePath(path);
+		String url = null;
+		if (path.startsWith(client.getWebdavUri().toString())) {
+			url = Uri.encode(path, ":/");
+		} else {
+			url = client.getWebdavUri() + WebdavUtils.encodePath(path);
+		}
+//		String url = absolutePath ? Uri.encode(path, ":/") : client.getWebdavUri() + WebdavUtils.encodePath(path);
 		MKLog.d(JackrabbitFileExplorer.class, "executeListFiles: %s", url);
 		try {
 			query = new PropFindMethod(url, DavConstants.PROPFIND_ALL_PROP, DavConstants.DEPTH_1);
@@ -336,7 +349,7 @@ public class JackrabbitFileExplorer implements FileExplorer {
 	private void changeDirToAbsoluteUrl(String path) throws IllegalDirectoryPathException, PathNotFoundException {
 		RemoteFile remoteFile;
 		try {
-			remoteFile = executeGetFile(mClient, path, false);
+			remoteFile = executeGetFile(mClient, path, true);
 		} catch (Exception e) {
 			throw new PathNotFoundException("Cannot found directory " + path);
 		}
@@ -482,7 +495,13 @@ public class JackrabbitFileExplorer implements FileExplorer {
 	 */
 	public static boolean executeMakeDir(OwnCloudClient client, String path, boolean absolutePath) {
 		MkColMethod mkCol = null;
-		String url = absolutePath ? Uri.encode(path, ":/") : client.getWebdavUri() + WebdavUtils.encodePath(path);
+		String url = null;
+		if (path.startsWith(client.getWebdavUri().toString())) {
+			url = Uri.encode(path, ":/");
+		} else {
+			url = client.getWebdavUri() + WebdavUtils.encodePath(path);
+		}
+//		String url = absolutePath ? Uri.encode(path, ":/") : client.getWebdavUri() + WebdavUtils.encodePath(path);
 		MKLog.d(JackrabbitFileExplorer.class, "executeMakeDir: %s", url);
 		try {
 			mkCol = new MkColMethod(url);
@@ -564,7 +583,13 @@ public class JackrabbitFileExplorer implements FileExplorer {
 		DeleteMethod delete = null;
 
 		/** get absolute path */
-		String url = absolutePath ? Uri.encode(path, ":/") : client.getWebdavUri() + WebdavUtils.encodePath(path);
+		String url = null;
+		if (path.startsWith(client.getWebdavUri().toString())) {
+			url = Uri.encode(path, ":/");
+		} else {
+			url = client.getWebdavUri() + WebdavUtils.encodePath(path);
+		}
+//		String url = absolutePath ? Uri.encode(path, ":/") : client.getWebdavUri() + WebdavUtils.encodePath(path);
 		MKLog.d(JackrabbitFileExplorer.class, "executeRemoveDirOrFile: %s", url);
 		try {
 			delete = new DeleteMethod(url);
@@ -628,8 +653,20 @@ public class JackrabbitFileExplorer implements FileExplorer {
 	public static boolean executeMoveFile(OwnCloudClient client, String src, String dest, boolean absolutePath) {
 
 		MoveMethod move = null;
-		String srcUrl = absolutePath ? Uri.encode(src, ":/") : client.getWebdavUri() + WebdavUtils.encodePath(src);
-		String destUrl = absolutePath ? Uri.encode(dest, ":/") : client.getWebdavUri() + WebdavUtils.encodePath(dest);
+		String srcUrl = null;
+		if (src.startsWith(client.getWebdavUri().toString())) {
+			srcUrl = Uri.encode(src, ":/");
+		} else {
+			srcUrl = client.getWebdavUri() + WebdavUtils.encodePath(src);
+		}
+//		String srcUrl = absolutePath ? Uri.encode(src, ":/") : client.getWebdavUri() + WebdavUtils.encodePath(src);
+		String destUrl = null;
+		if (dest.startsWith(client.getWebdavUri().toString())) {
+			destUrl = Uri.encode(dest, ":/");
+		} else {
+			destUrl = client.getWebdavUri() + WebdavUtils.encodePath(dest);
+		}
+//		String destUrl = absolutePath ? Uri.encode(dest, ":/") : client.getWebdavUri() + WebdavUtils.encodePath(dest);
 		MKLog.d(JackrabbitFileExplorer.class, "executeMoveFile src: %s", srcUrl);
 		MKLog.d(JackrabbitFileExplorer.class, "executeMoveFile dst: %s", destUrl);
 		try {
@@ -797,8 +834,20 @@ public class JackrabbitFileExplorer implements FileExplorer {
 	 */
 	public static boolean executeRename(OwnCloudClient client, String oldName, String newName, boolean absolutePath) {
 		boolean result = false;
-		String oldUrl = absolutePath ? Uri.encode(oldName, ":/") : client.getWebdavUri() + WebdavUtils.encodePath(oldName);
-		String newUrl = absolutePath ? Uri.encode(newName, ":/") : client.getWebdavUri() + WebdavUtils.encodePath(newName);
+		String oldUrl = null;
+		if (oldName.startsWith(client.getWebdavUri().toString())) {
+			oldUrl = Uri.encode(oldName, ":/");
+		} else {
+			oldUrl = client.getWebdavUri() + WebdavUtils.encodePath(oldName);
+		}
+//		String oldUrl = absolutePath ? Uri.encode(oldName, ":/") : client.getWebdavUri() + WebdavUtils.encodePath(oldName);
+		String newUrl = null;
+		if (newName.startsWith(client.getWebdavUri().toString())) {
+			newUrl = Uri.encode(newName, ":/");
+		} else {
+			newUrl = client.getWebdavUri() + WebdavUtils.encodePath(newName);
+		}
+//		String newUrl = absolutePath ? Uri.encode(newName, ":/") : client.getWebdavUri() + WebdavUtils.encodePath(newName);
 		LocalMoveMethod move = null;
 		MKLog.d(JackrabbitFileExplorer.class, "executeRename ole: %s", oldUrl);
 		MKLog.d(JackrabbitFileExplorer.class, "executeRename new: %s", newUrl);

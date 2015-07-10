@@ -37,4 +37,6 @@
     <!-- Edit dialog -->
     <color name="dialog_edit_background_selected">#ff64e0ff</color>
     <color name="dialog_edit_background_normal">#ffdfdfdf</color>
+
+    <color name="file_broswer_activity_bg_color">#ffeeeeee</color>
 </resources>

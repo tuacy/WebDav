@@ -2,11 +2,13 @@ package com.vae.wuyunxing.webdav.mobile.main;
 
 import android.app.Fragment;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -19,6 +21,7 @@ import com.vae.wuyunxing.webdav.library.FileInfo;
 import com.vae.wuyunxing.webdav.library.exception.DirectoryAlreadyExistsException;
 import com.vae.wuyunxing.webdav.library.filter.FileFilter;
 import com.vae.wuyunxing.webdav.library.imp.jackrabbit.JackrabbitPath;
+import com.vae.wuyunxing.webdav.library.log.MKLog;
 import com.vae.wuyunxing.webdav.library.sort.FileSorter;
 import com.vae.wuyunxing.webdav.library.util.FileUtil;
 import com.vae.wuyunxing.webdav.library.util.PathUtil;
@@ -33,8 +36,11 @@ import com.vae.wuyunxing.webdav.mobile.main.message.EditSelectionEvent;
 import com.vae.wuyunxing.webdav.mobile.main.message.EnterEditModeEvent;
 import com.vae.wuyunxing.webdav.mobile.main.message.ExitEditModeEvent;
 import com.vae.wuyunxing.webdav.mobile.main.message.FilterFileEvent;
+import com.vae.wuyunxing.webdav.mobile.main.message.MoveRemoteFileEvent;
 import com.vae.wuyunxing.webdav.mobile.main.message.PlayFileEvent;
+import com.vae.wuyunxing.webdav.mobile.main.message.RenameRemoteFileEvent;
 import com.vae.wuyunxing.webdav.mobile.main.message.SortFileEvent;
+import com.vae.wuyunxing.webdav.mobile.main.message.StartMoveRemoteFileEvent;
 
 import java.util.Collections;
 import java.util.Comparator;
@@ -213,8 +219,7 @@ public class RemoteFileListFragment extends Fragment {
 				if (task.isFaulted()) {
 					updateFileListView(mDispFileList);
 					mFileExplorer = null;
-				}
-				else if (task.isCompleted() && task.getResult()) {
+				} else if (task.isCompleted() && task.getResult()) {
 					getAndDisplayFileList(".");
 				} else {
 					/** exception */
@@ -334,7 +339,7 @@ public class RemoteFileListFragment extends Fragment {
 		String sambaUser = "root";
 		String currentUser = "hardy";
 		String userStoragePath = "Home";
-		String path = PathUtil.appendPath(true, "Screenshots");
+		String path = PathUtil.appendPath(true, "/");
 		return new JackrabbitPath(domain, path, sambaUser, password);
 	}
 
@@ -460,6 +465,78 @@ public class RemoteFileListFragment extends Fragment {
         }, Task.UI_THREAD_EXECUTOR);
     }
 
+	private void showRenameDialog(final FileInfo renameFile) {
+		final CommonDialog renameDialog = new CommonDialog(getActivity(), R.style.Dialog);
+		final EditText editFile = new EditText(getActivity());
+		editFile.setCompoundDrawablesWithIntrinsicBounds(R.drawable.new_folder, 0, 0, 0);
+		StringBuilder builder = new StringBuilder(renameFile.getName());
+		if (builder.charAt(builder.length() - 1) == '/') {
+			builder.deleteCharAt(builder.length() - 1);
+		}
+		editFile.setText(builder.toString());
+		editFile.setBackgroundResource(R.drawable.dialog_edit_selector);
+		renameDialog.setView(editFile);
+		renameDialog.setTitleBackground(R.drawable.dialog_title_blue);
+		renameDialog.setTitleTextColor(getResources().getColor(R.color.white));
+		renameDialog.setTitleText(R.string.str_rename);
+		renameDialog.setPositiveButtonBackground(R.drawable.dialog_button_selector);
+		renameDialog.setPositiveButtonTextColor(getResources().getColor(R.color.black_80alpha));
+		renameDialog.setNegativeButtonTextColor(getResources().getColor(R.color.black_80alpha));
+		renameDialog.setNegativeButtonBackground(R.drawable.dialog_button_selector);
+		renameDialog.setNegativeButton(R.string.cancel, new View.OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				renameDialog.cancel();
+			}
+
+		});
+		renameDialog.setPositiveButton(R.string.ok, new View.OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				Task.call(new Callable<Void>() {
+					@Override
+					public Void call() throws Exception {
+						renameDialog.dismiss();
+						((MobileBaseActivity) getActivity()).showWaitingDialog();
+
+						return null;
+					}
+				}, Task.UI_THREAD_EXECUTOR).onSuccess(new Continuation<Void, Boolean>() {
+					@Override
+					public Boolean then(Task<Void> task) throws Exception {
+						String fileName = editFile.getText().toString();
+						for (FileInfo fileInfo : mCurDirFileList) {
+							if (fileInfo.getName().equals(fileName) || fileInfo.getName().equals(fileName + '/')) {
+								return false;
+							}
+						}
+						return mFileExplorer.renameFileOrDir(renameFile.getName(), fileName);
+					}
+				}, Task.BACKGROUND_EXECUTOR).continueWith(new Continuation<Boolean, Void>() {
+					@Override
+					public Void then(Task<Boolean> task) throws Exception {
+						((MobileBaseActivity) getActivity()).dismissWaitingDialog();
+						if (task.isFaulted()) {
+							((MobileBaseActivity) getActivity()).toasts(getString(R.string.rename_failed));
+						} else if (task.isCompleted()) {
+							if (task.getResult()) {
+								((MobileBaseActivity) getActivity()).toasts(getString(R.string.rename_success));
+							} else {
+								((MobileBaseActivity) getActivity()).toasts(getString(R.string.rename_conflict));
+							}
+						}
+						EventBus.getDefault().post(new ExitEditModeEvent());
+						getAndDisplayFileList(".");
+						return null;
+					}
+				}, Task.UI_THREAD_EXECUTOR);
+			}
+		});
+		renameDialog.show();
+	}
+
 	/*** view operation  **/
 	@OnItemClick(R.id.drive_browser_file_list)
 	void fileClick(int position) {
@@ -477,7 +554,6 @@ public class RemoteFileListFragment extends Fragment {
 		} else {
 			FileInfo file = (FileInfo) mListView.getAdapter().getItem(position);
 			if (file.isDir()) {
-                Log.d("vae_tag", file.getName());
 				getAndDisplayFileList(file.getName());
 			} else {
 				EventBus.getDefault().post(new PlayFileEvent(file.getUri()));
@@ -598,5 +674,86 @@ public class RemoteFileListFragment extends Fragment {
             showDeleteDialog();
         }
     }
+
+	public void onEventMainThread(RenameRemoteFileEvent event) {
+		int selectItem = getCurrentSelectNum();
+		FileInfo renameFile = null;
+
+		if (selectItem == 1) {
+			for (FileInfo fileInfo : mDispFileList) {
+				int hash = fileInfo.getName().hashCode();
+				if (mSelections.contains(hash)) {
+					renameFile = fileInfo;
+				}
+			}
+			if (renameFile != null) {
+				showRenameDialog(renameFile);
+			}
+		} else if (selectItem > 1) {
+			((MobileBaseActivity) getActivity()).toasts(getString(R.string.str_can_not_rename_at_same_time));
+		}
+	}
+
+	public void onEventMainThread(MoveRemoteFileEvent event) {
+		MKLog.d(RemoteFileListFragment.class, "MoveRemoteFileEvent 0");
+		if (getCurrentSelectNum() == 0) {
+			return;
+		}
+
+		MKLog.d(RemoteFileListFragment.class, "MoveRemoteFileEvent 1");
+		Intent intent = new Intent();
+		intent.putExtra(RemoteFilePathSelectActivity.KEY_TYPE, RemoteFilePathSelectActivity.PATH_SELECT_FOR_MOVE);
+		intent.setClass(getActivity(), RemoteFilePathSelectActivity.class);
+		startActivity(intent);
+	}
+
+	public void onEventMainThread(final StartMoveRemoteFileEvent event) {
+		if (getCurrentSelectNum() == 0) {
+			return;
+		}
+
+		Task.call(new Callable<Void>() {
+			@Override
+			public Void call() throws Exception {
+				((MobileBaseActivity) getActivity()).showWaitingDialog();
+				return null;
+			}
+		}, Task.UI_THREAD_EXECUTOR).onSuccess(new Continuation<Void, Boolean>() {
+			@Override
+			public Boolean then(Task<Void> task) throws Exception {
+				String newPath = event.moveToPath;
+				for (FileInfo fileInfo : mCurDirFileList) {
+					int hash = fileInfo.getName().hashCode();
+					if (mSelections.contains(hash)) {
+						try {
+							mFileExplorer.mv(fileInfo.getUri(), newPath);
+						} catch (DirectoryAlreadyExistsException e) {
+							return false;
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+					}
+				}
+				return true;
+			}
+		}, Task.BACKGROUND_EXECUTOR).continueWith(new Continuation<Boolean, Void>() {
+			@Override
+			public Void then(Task<Boolean> task) throws Exception {
+				((MobileBaseActivity) getActivity()).dismissWaitingDialog();
+				if (task.isFaulted()) {
+					((MobileBaseActivity) getActivity()).toasts(getString(R.string.str_move_failed));
+				} else if (task.isCompleted()) {
+					if (task.getResult()) {
+						EventBus.getDefault().post(new ExitEditModeEvent());
+						getAndDisplayFileList(".");
+						((MobileBaseActivity) getActivity()).toasts(getString(R.string.str_move_success));
+					} else {
+						((MobileBaseActivity) getActivity()).toasts(getString(R.string.rename_conflict));
+					}
+				}
+				return null;
+			}
+		}, Task.UI_THREAD_EXECUTOR);
+	}
 
 }

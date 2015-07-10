@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/file_broswer_activity_bg_color"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/title_id"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/action_bar_background_blue"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:layout_alignParentTop="true"
+        android:paddingLeft="@dimen/padding_mini_2"
+        android:paddingRight="@dimen/padding_mini_2">
+
+        <Button
+            android:id="@+id/select_back_btn_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:background="@drawable/return_btn_selector"
+            android:minHeight="@dimen/limited_button_shape_mini_width_height"
+            android:minWidth="@dimen/limited_button_shape_mini_width_height" />
+
+        <TextView
+            android:id="@+id/select_title_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:gravity="center"
+            android:text="@string/str_move_to_position_select"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/text_size_normal" />
+
+        <Button
+            android:id="@+id/select_new_dir_btn_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/transparent_btn_selecter"
+            android:minHeight="@dimen/limited_button_shape_mini_width_height"
+            android:minWidth="@dimen/limited_button_shape_mini_width_height"
+            android:text="@string/str_new"
+            android:textColor="@drawable/background_color_normal_white_select_blue"
+            android:textSize="@dimen/text_size_small" />
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/select_path_id"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/title_id"
+        android:ellipsize="start"
+        android:singleLine="true"
+        android:textSize="@dimen/text_size_small" />
+
+    <include
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/bottom_btn_id"
+        android:layout_below="@+id/select_path_id"
+        android:layout_weight="0.6"
+        layout="@layout/fragment_drive_browser_file_list" />
+
+    <RelativeLayout
+        android:id="@+id/bottom_btn_id"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:alpha="0.9"
+        android:background="@drawable/drive_browser_function_bar_background"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingLeft="@dimen/padding_mini_2"
+        android:paddingRight="@dimen/padding_mini_2"
+        android:minHeight="@dimen/limited_button_shape_mini_width_height"
+        android:minWidth="@dimen/limited_button_shape_mini_width_height">
+
+        <Button
+            android:id="@+id/left_btn_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="@dimen/margin_tiny_3"
+            android:background="@drawable/homeshare_delete_button_pressed_drawable"
+            android:text="@string/cancel"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_size_small"
+            android:minHeight="@dimen/limited_button_shape_mini_width_height"
+            android:minWidth="@dimen/limited_button_shape_mini_width_height" />
+
+        <Button
+            android:id="@+id/right_btn_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/margin_tiny_3"
+            android:background="@drawable/homeshare_delete_button_pressed_drawable"
+            android:text="@string/str_confirm"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_size_small"
+            android:minHeight="@dimen/limited_button_shape_mini_width_height"
+            android:minWidth="@dimen/limited_button_shape_mini_width_height" />
+    </RelativeLayout>
+
+</RelativeLayout>
