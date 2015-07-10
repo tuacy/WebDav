@@ -335,7 +335,7 @@ public class RemoteFileListFragment extends Fragment {
 	 * @return
 	 */
 	private JackrabbitPath getJackrabbitPath(String password) {
-		String domain = "192.168.31.153";
+		String domain = "192.168.1.6";
 		String sambaUser = "root";
 		String currentUser = "hardy";
 		String userStoragePath = "Home";

@@ -2,14 +2,18 @@ package com.vae.wuyunxing.webdav.mobile;
 
 import android.app.Activity;
 import android.app.Application;
+import android.content.ComponentName;
+import android.content.ServiceConnection;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.util.Log;
 
 import com.vae.wuyunxing.webdav.library.config.LibraryConfig;
 import com.vae.wuyunxing.webdav.library.log.CustomLogger;
 import com.vae.wuyunxing.webdav.library.log.MKLog;
 import com.vae.wuyunxing.webdav.mobile.config.MobileConfig;
+import com.vae.wuyunxing.webdav.mobile.main.transmission.TransferService;
 
 import de.greenrobot.event.EventBus;
 
@@ -18,12 +22,16 @@ import greendao.DaoSession;
 
 public class MobileApplication extends Application implements Application.ActivityLifecycleCallbacks {
 
+    private static MobileApplication sInstance;
 	/** greenDao database DaoSession */
 	private DaoSession mDaoSession;
+
+    private TransferService mTransferManager;
 
 	@Override
 	public void onCreate() {
 		super.onCreate();
+        sInstance = this;
 
 		/** setup greenDao database */
 		setupDatabase();
@@ -34,6 +42,9 @@ public class MobileApplication extends Application implements Application.Activi
 		if (MobileConfig.getInstance().getBoolean(MobileConfig.DEBUG, false)) {
 			MKLog.setCustomLogger(new MobileLogger());
 		}
+
+        /** start transfer service */
+        startTransferService();
 	}
 
 	private void setupDatabase() {
@@ -42,6 +53,10 @@ public class MobileApplication extends Application implements Application.Activi
 		DaoMaster daoMaster = new DaoMaster(db);
 		mDaoSession = daoMaster.newSession();
 	}
+
+    public static MobileApplication getInstance() {
+        return sInstance;
+    }
 
 	/***
 	 * Get DaoSession
@@ -128,4 +143,28 @@ public class MobileApplication extends Application implements Application.Activi
 			Log.e(clazz.getSimpleName(), String.format(format, args), t);
 		}
 	}
+
+    /*** transfer service ***/
+    private final ServiceConnection mServiceConn = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            if (service instanceof TransferService.TransmitterBinder) {
+                mTransferManager = ((TransferService.TransmitterBinder) service).getTransferService();
+            }
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+            mTransferManager = null;
+        }
+    };
+
+    private void startTransferService() {
+        TransferService.startup(getApplicationContext());
+        TransferService.bind(getApplicationContext(), mServiceConn);
+    }
+
+    public TransferService getTransferManager() {
+        return mTransferManager;
+    }
 }

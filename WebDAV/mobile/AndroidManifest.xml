@@ -43,7 +43,9 @@
             android:theme="@style/AppTheme.Translucent"
             android:screenOrientation="portrait" />
 
+        <service android:name="com.vae.wuyunxing.webdav.mobile.main.transmission.TransferService" />
         <service android:name="com.vae.wuyunxing.webdav.library.play.webdav.WebDAVFilePlayService" />
+
 
     </application>
 
