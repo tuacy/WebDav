@@ -171,12 +171,12 @@ public class RemoteFileListFragment extends Fragment {
 
 	private void initPtrFrameLayout(PtrFrameLayout ptrFrame) {
 		ptrFrame.setPtrHandler(new PtrDefaultHandler() {
-            @Override
-            public void onRefreshBegin(PtrFrameLayout ptrFrameLayout) {
-                refreshBegin();
-                updateCurrentFileList();
-            }
-        });
+			@Override
+			public void onRefreshBegin(PtrFrameLayout ptrFrameLayout) {
+				refreshBegin();
+				updateCurrentFileList();
+			}
+		});
 	}
 
 	/**
@@ -210,7 +210,11 @@ public class RemoteFileListFragment extends Fragment {
 		}, Task.BACKGROUND_EXECUTOR).continueWith(new Continuation<Boolean, Void>() {
 			@Override
 			public Void then(Task<Boolean> task) throws Exception {
-				if (task.isCompleted() && task.getResult()) {
+				if (task.isFaulted()) {
+					updateFileListView(mDispFileList);
+					mFileExplorer = null;
+				}
+				else if (task.isCompleted() && task.getResult()) {
 					getAndDisplayFileList(".");
 				} else {
 					/** exception */
@@ -326,7 +330,7 @@ public class RemoteFileListFragment extends Fragment {
 	 * @return
 	 */
 	private JackrabbitPath getJackrabbitPath(String password) {
-		String domain = "192.168.1.6";
+		String domain = "192.168.31.153";
 		String sambaUser = "root";
 		String currentUser = "hardy";
 		String userStoragePath = "Home";
