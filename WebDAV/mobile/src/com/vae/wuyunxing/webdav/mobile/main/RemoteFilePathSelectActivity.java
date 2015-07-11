@@ -82,8 +82,6 @@ public class RemoteFilePathSelectActivity extends MobileBaseActivity {
 	private int        mFilterType     = FilterFileEvent.FILTER_TYPE_ALL;
 	private FileSorter mSorter         = FileSorter.FILE_NAME_ASCENDING;
 	private boolean    mIsRefreshing   = false;
-	private boolean    mUseSamba       = true;
-	private String     mOldSmbPassword = "";
 	private int mSelectFor;
 
 	@Override

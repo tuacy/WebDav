@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.webkit.MimeTypeMap;
 
+import com.vae.wuyunxing.webdav.library.log.MKLog;
 import com.vae.wuyunxing.webdav.library.play.util.Utils;
 import com.vae.wuyunxing.webdav.library.play.webdav.WebDAVFilePlayService;
 import com.vae.wuyunxing.webdav.library.play.webdav.WebDAVFileServer;
@@ -15,6 +16,7 @@ import com.vae.wuyunxing.webdav.mobile.R;
 import com.vae.wuyunxing.webdav.mobile.main.message.BackParentEvent;
 import com.vae.wuyunxing.webdav.mobile.main.message.EnterEditModeEvent;
 import com.vae.wuyunxing.webdav.mobile.main.message.ExitEditModeEvent;
+import com.vae.wuyunxing.webdav.mobile.main.message.FilterFileEvent;
 import com.vae.wuyunxing.webdav.mobile.main.message.PlayFileEvent;
 
 import de.greenrobot.event.EventBus;
@@ -25,6 +27,8 @@ import java.net.URLEncoder;
 import butterknife.ButterKnife;
 
 public class MainActivity extends MobileBaseActivity{
+
+    public static final String KEY_CATEGORY_TYPE = "category_type";
 
     public static final int SORT_TYPE_FILE_NAME = 0;
     public static final int SORT_TYPE_FILE_SIZE = 1;

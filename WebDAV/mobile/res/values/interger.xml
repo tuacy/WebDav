@@ -5,4 +5,19 @@
 
     <!-- Uplaod type dialog -->
     <integer name="upload_type_dialog_column_count">3</integer>
+    <integer name="image_thumb_gridview_space">5</integer>
+
+    <!-- Number flag icon -->
+    <integer name="draw_circle_cx">32</integer>
+    <integer name="draw_circle_cy">32</integer>
+    <integer name="draw_circle_radius">16</integer>
+    <integer name="draw_text_size_small">20</integer>
+    <integer name="draw_text_size_big">24</integer>
+    <integer name="draw_text_cx_small">24</integer>
+    <integer name="draw_text_cx_big">20</integer>
+    <integer name="draw_text_cy">40</integer>
+
+    <!-- Image or Video Dir Select Fragment-->
+    <integer name="image_dir_thumb_width_height">80</integer>
+    <integer name="image_thumb_width_height">350</integer>
 </resources>

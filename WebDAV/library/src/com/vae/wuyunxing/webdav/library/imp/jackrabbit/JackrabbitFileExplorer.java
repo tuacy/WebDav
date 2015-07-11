@@ -419,7 +419,14 @@ public class JackrabbitFileExplorer implements FileExplorer {
 	@Override
 	public String pwd(Boolean withoutBaseUrl) {
 		String rootPath = mRootDir.getUri();
+        /** fix issue some WebDAV mRootDir.getUri() with out http://192.168. */
+        if (!rootPath.startsWith(mClient.getBaseUri().toString())) {
+            rootPath = mClient.getBaseUri() + rootPath;
+        }
 		String curPath = mCurrentDir.getUri();
+        if (!curPath.startsWith(mClient.getBaseUri().toString())) {
+            curPath = mClient.getBaseUri() + curPath;
+        }
 
 		if (withoutBaseUrl) {
 			return curPath.replaceAll(rootPath.endsWith("/") ? rootPath.substring(0, rootPath.length() - 1) : rootPath, "");

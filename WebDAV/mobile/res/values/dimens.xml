@@ -74,4 +74,11 @@
     <dimen name="dialog_edit_shape_radius">15dp</dimen>
 
     <dimen name="limited_button_shape_mini_width_height">0dp</dimen>
+
+    <!-- Image or Video upload activity -->
+    <dimen name="fb_gridview_width_height">160dp</dimen>
+    <dimen name="fb_gridview_item_width_height">70dp</dimen>
+
+    <dimen name="grid_view_item_width">150dp</dimen>
+    <dimen name="grid_view_item_height">90dp</dimen>
 </resources>

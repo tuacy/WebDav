@@ -1,7 +1,18 @@
 package com.vae.wuyunxing.webdav.library.imp.local;
 
+import android.app.Activity;
+import android.content.ContentResolver;
+import android.content.Context;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.os.storage.StorageManager;
+import android.provider.MediaStore;
+
 import com.vae.wuyunxing.webdav.library.DotDotFile;
 import com.vae.wuyunxing.webdav.library.DotFile;
+import com.vae.wuyunxing.webdav.library.FileCategory;
 import com.vae.wuyunxing.webdav.library.FileExplorer;
 import com.vae.wuyunxing.webdav.library.FileInfo;
 import com.vae.wuyunxing.webdav.library.exception.AccessViolationException;
@@ -11,16 +22,30 @@ import com.vae.wuyunxing.webdav.library.exception.IllegalDirectoryPathException;
 import com.vae.wuyunxing.webdav.library.exception.NoSuchFileException;
 import com.vae.wuyunxing.webdav.library.exception.PathNotFoundException;
 import com.vae.wuyunxing.webdav.library.log.MKLog;
+import com.vae.wuyunxing.webdav.library.util.FileSizeConvertUtils;
+import com.vae.wuyunxing.webdav.library.util.LocalStorageUtils;
 import com.vae.wuyunxing.webdav.library.util.PathUtil;
+
+import org.apache.commons.io.FileUtils;
 
 import java.io.File;
 import java.io.FileFilter;
 import java.io.IOException;
+import java.lang.reflect.Method;
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class LocalFileExplorer implements FileExplorer {
+
+    public static final String KEY_PATH         = "file_path";
+    public static final String KEY_VIDEO_URL    = "_data";
+    public static final String KEY_SIZE         = "_size";
+    public static final String KEY_DURATION     = "duration";
+    public static final String KEY_THUMB_BITMAP = "thumb_data";
+    public static final String KEY_NAME         = "file_name";
 
 	private File mRootDir;
 	private File mCurrentDir;
@@ -480,4 +505,260 @@ public class LocalFileExplorer implements FileExplorer {
 		throws AccessViolationException, PathNotFoundException, IllegalDirectoryPathException, NoSuchFileException {
 		return false;
 	}
+
+
+    public static List<FileInfo> getMusicList(Context context) {
+        ContentResolver mContentResolver = context.getContentResolver();
+        Cursor cursorAudioMedia = mContentResolver.query(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, null, null, null,
+                MediaStore.Audio.Media.DATE_MODIFIED);
+        int cursorAudioMediaCount = cursorAudioMedia.getCount();
+        List<FileInfo> fileList = new ArrayList<FileInfo>(cursorAudioMediaCount);
+        cursorAudioMedia.moveToFirst();
+        for (int index = 0; index < cursorAudioMediaCount; index++) {
+            String audioUrl = cursorAudioMedia.getString(cursorAudioMedia.getColumnIndexOrThrow(MediaStore.Audio.Media.DATA));
+            String audioSize = cursorAudioMedia.getString(cursorAudioMedia.getColumnIndexOrThrow(MediaStore.Audio.Media.SIZE));
+            String audioDuration = cursorAudioMedia.getString(cursorAudioMedia.getColumnIndexOrThrow(MediaStore.Audio.Media.DURATION));
+            String audioName = cursorAudioMedia.getString(cursorAudioMedia.getColumnIndexOrThrow(MediaStore.Audio.Media.DISPLAY_NAME));
+            File localFile = new File(audioUrl);
+            LocalFileInfo info = LocalFileInfo.create(localFile);
+            fileList.add(info);
+            cursorAudioMedia.moveToNext();
+        }
+        cursorAudioMedia.close();
+        return fileList;
+    }
+
+    public static List<FileInfo> getDocumentList() {
+        List<FileInfo> fileList = new ArrayList<FileInfo>();
+
+        String rootPath = LocalStorageUtils.getExternalPath();
+        File filePath = new File(rootPath);
+
+        List<File> fileLists = (List<File>) FileUtils.listFiles(filePath, FileCategory.DOCUMENT.getSuffixes(), true);
+        if (fileLists != null) {
+            for (File tmp : fileLists) {
+                LocalFileInfo info = LocalFileInfo.create(tmp);
+                fileList.add(info);
+            }
+        }
+        return fileList;
+    }
+
+    public static List<FileInfo> getApkFileList() {
+        List<FileInfo> fileList = new ArrayList<FileInfo>();
+
+        String rootPath = LocalStorageUtils.getExternalPath();
+        File filePath = new File(rootPath);
+
+        List<File> fileLists = (List<File>) FileUtils.listFiles(filePath, FileCategory.APPLICATION.getSuffixes(), true);
+        if (fileLists != null) {
+            for (File tmp : fileLists) {
+                LocalFileInfo info = LocalFileInfo.create(tmp);
+                fileList.add(info);
+            }
+        }
+        return fileList;
+    }
+
+    public static List<FileInfo> getBtFileList() {
+        List<FileInfo> fileList = new ArrayList<FileInfo>();
+
+        String rootPath = LocalStorageUtils.getExternalPath();
+        File filePath = new File(rootPath);
+
+        List<File> fileLists = (List<File>) FileUtils.listFiles(filePath, FileCategory.BIT_TORRENT.getSuffixes(), true);
+        if (fileLists != null) {
+            for (File tmp : fileLists) {
+                LocalFileInfo info = LocalFileInfo.create(tmp);
+                fileList.add(info);
+            }
+        }
+        return fileList;
+    }
+
+    public static List<FileInfo> getSelectVideoList(Context context, String bucketDisplayName) {
+        ContentResolver mContentResolver = context.getContentResolver();
+        List<FileInfo> fileList = new ArrayList<FileInfo>();
+
+        ArrayList<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
+        Cursor cursorVideo = mContentResolver.query(MediaStore.Video.Media.EXTERNAL_CONTENT_URI, null,
+                MediaStore.Video.VideoColumns.BUCKET_DISPLAY_NAME + "=?",
+                new String[]{bucketDisplayName}, MediaStore.Video.VideoColumns.DATE_MODIFIED);
+        int bucketCount = cursorVideo.getCount();
+        cursorVideo.moveToFirst();
+        for (int index = 0; index < bucketCount; index++) {
+            String videoUrl = cursorVideo.getString(cursorVideo.getColumnIndexOrThrow(MediaStore.Video.VideoColumns.DATA));
+            int videoSize = cursorVideo.getInt(cursorVideo.getColumnIndexOrThrow(MediaStore.Video.VideoColumns.SIZE));
+            String videoDuration = cursorVideo.getString(cursorVideo.getColumnIndexOrThrow(MediaStore.Video.VideoColumns.DURATION));
+            String videoId = cursorVideo.getString(cursorVideo.getColumnIndexOrThrow(MediaStore.Video.VideoColumns._ID));
+            String videoName = cursorVideo.getString(cursorVideo.getColumnIndexOrThrow(MediaStore.Video.VideoColumns.DISPLAY_NAME));
+            BitmapFactory.Options opts = new BitmapFactory.Options();
+            opts.inPreferredConfig = Bitmap.Config.RGB_565;
+            opts.inPurgeable = true;
+            opts.inInputShareable = true;
+            Bitmap miniThumb = MediaStore.Video.Thumbnails.getThumbnail(mContentResolver, Long.valueOf(videoId),
+                    MediaStore.Video.Thumbnails.MICRO_KIND, opts);
+
+            Map<String, Object> map = new HashMap<String, Object>();
+            map.put(KEY_VIDEO_URL, videoUrl);
+            map.put(KEY_SIZE, FileSizeConvertUtils.formatFileSizeUnit(videoSize));
+            map.put(KEY_DURATION, videoDuration);
+            map.put(KEY_THUMB_BITMAP, miniThumb);
+            map.put(KEY_NAME, videoName);
+            list.add(map);
+
+            File localFile = new File(videoUrl);
+            LocalFileInfo info = LocalFileInfo.create(localFile);
+            fileList.add(info);
+
+            cursorVideo.moveToNext();
+        }
+        cursorVideo.close();
+
+        return fileList;
+    }
+
+    public static List<FileInfo> getSelectPhotoList(Context context, String bucketDisplayName) {
+        ContentResolver mContentResolver = context.getContentResolver();
+        List<FileInfo> fileList = new ArrayList<FileInfo>();
+
+        Cursor cursor = mContentResolver.query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, null,
+                MediaStore.Images.ImageColumns.BUCKET_DISPLAY_NAME + "=?", new String[]{bucketDisplayName},
+                MediaStore.Images.ImageColumns.DATE_MODIFIED);
+        int imageCount = cursor.getCount();
+        cursor.moveToFirst();
+        for (int index = 0; index < imageCount; index++) {
+            int col = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+            String src = cursor.getString(col);
+            File localFile = new File(src);
+            LocalFileInfo info = LocalFileInfo.create(localFile);
+            fileList.add(info);
+            cursor.moveToNext();
+        }
+        cursor.close();
+        return fileList;
+    }
+
+    public static ArrayList<String> getImageBucketDir(Context context) {
+        ContentResolver mContentResolver = context.getContentResolver();
+        ArrayList<String> list = new ArrayList<String>();
+
+        Cursor cursor = mContentResolver.query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                new String[]{MediaStore.Images.ImageColumns.BUCKET_DISPLAY_NAME},
+                "1) group by (" + MediaStore.Images.ImageColumns.BUCKET_DISPLAY_NAME, null, null);
+
+        int imageCount = cursor.getCount();
+        cursor.moveToFirst();
+        for (int index = 0; index < imageCount; index++) {
+            int col = cursor.getColumnIndexOrThrow(MediaStore.Images.ImageColumns.BUCKET_DISPLAY_NAME);
+            String src = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Images.ImageColumns.BUCKET_DISPLAY_NAME));
+            list.add(src);
+            cursor.moveToNext();
+        }
+        cursor.close();
+
+        return list;
+    }
+
+    public static ArrayList<Map<String, Object>> getBucketImages(Context context, String bucketDisplayName) {
+        ContentResolver mContentResolver = context.getContentResolver();
+        ArrayList<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
+        Cursor cursor = mContentResolver.query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, null,
+                MediaStore.Images.ImageColumns.BUCKET_DISPLAY_NAME + "=?", new String[]{bucketDisplayName},
+                MediaStore.Images.ImageColumns.DATE_MODIFIED);
+        int imageCount = cursor.getCount();
+        cursor.moveToFirst();
+        for (int index = 0; index < imageCount; index++) {
+            int col = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+            String src = cursor.getString(col);
+            String name = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Images.Media.TITLE));
+            Map<String, Object> temp = new HashMap<String, Object>();
+            temp.put(KEY_PATH, Uri.fromFile(new File(src)));
+            temp.put(KEY_NAME, name);
+            list.add(temp);
+            cursor.moveToNext();
+        }
+        cursor.close();
+
+        return list;
+    }
+
+    public static ArrayList<String> getVideoBucketDir(Context context) {
+        ContentResolver mContentResolver = context.getContentResolver();
+        ArrayList<String> list = new ArrayList<String>();
+
+        Cursor cursor = mContentResolver.query(MediaStore.Video.Media.EXTERNAL_CONTENT_URI,
+                new String[]{MediaStore.Video.VideoColumns.BUCKET_DISPLAY_NAME},
+                "1) group by (" + MediaStore.Video.VideoColumns.BUCKET_DISPLAY_NAME, null, null);
+
+        int bucketCount = cursor.getCount();
+        cursor.moveToFirst();
+        for (int index = 0; index < bucketCount; index++) {
+            int col = cursor.getColumnIndexOrThrow(MediaStore.Video.VideoColumns.BUCKET_DISPLAY_NAME);
+            String src = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Video.VideoColumns.BUCKET_DISPLAY_NAME));
+            list.add(src);
+            cursor.moveToNext();
+        }
+        cursor.close();
+
+        return list;
+    }
+
+    public static ArrayList<Map<String, Object>> getBucketVideos(Context context, String bucketDisplayName) {
+        ContentResolver mContentResolver = context.getContentResolver();
+        ArrayList<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
+        Cursor cursorVideo = mContentResolver.query(MediaStore.Video.Media.EXTERNAL_CONTENT_URI, null,
+                MediaStore.Video.VideoColumns.BUCKET_DISPLAY_NAME + "=?",
+                new String[]{bucketDisplayName}, MediaStore.Video.VideoColumns.DATE_MODIFIED);
+        int bucketCount = cursorVideo.getCount();
+        cursorVideo.moveToFirst();
+        for (int index = 0; index < bucketCount; index++) {
+            String videoUrl = cursorVideo.getString(cursorVideo.getColumnIndexOrThrow(MediaStore.Video.VideoColumns.DATA));
+            int videoSize = cursorVideo.getInt(cursorVideo.getColumnIndexOrThrow(MediaStore.Video.VideoColumns.SIZE));
+            String videoDuration = cursorVideo.getString(cursorVideo.getColumnIndexOrThrow(MediaStore.Video.VideoColumns.DURATION));
+            String videoId = cursorVideo.getString(cursorVideo.getColumnIndexOrThrow(MediaStore.Video.VideoColumns._ID));
+            String videoName = cursorVideo.getString(cursorVideo.getColumnIndexOrThrow(MediaStore.Video.VideoColumns.DISPLAY_NAME));
+            BitmapFactory.Options opts = new BitmapFactory.Options();
+            opts.inPreferredConfig = Bitmap.Config.RGB_565;
+            opts.inPurgeable = true;
+            opts.inInputShareable = true;
+            Bitmap miniThumb = MediaStore.Video.Thumbnails.getThumbnail(mContentResolver, Long.valueOf(videoId),
+                    MediaStore.Video.Thumbnails.MICRO_KIND, opts);
+
+            Map<String, Object> map = new HashMap<String, Object>();
+            map.put(KEY_VIDEO_URL, videoUrl);
+            map.put(KEY_SIZE, FileSizeConvertUtils.formatFileSizeUnit(videoSize));
+            map.put(KEY_DURATION, videoDuration);
+            map.put(KEY_THUMB_BITMAP, miniThumb);
+            map.put(KEY_NAME, videoName);
+            list.add(map);
+
+            cursorVideo.moveToNext();
+        }
+        cursorVideo.close();
+
+        return list;
+    }
+
+    public static List<FileInfo> getAllStorageList(Context context) {
+        String[] paths = null;
+        List<FileInfo> fileList = new ArrayList<FileInfo>();
+        if (context != null) {
+            StorageManager mStorageManager = (StorageManager) context.getSystemService(Activity.STORAGE_SERVICE);
+            try {
+                Method mMethodGetPaths = mStorageManager.getClass().getMethod("getVolumePaths");
+                paths = (String[]) mMethodGetPaths.invoke(mStorageManager);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        if (paths != null) {
+            for (String path : paths) {
+                File localFile = new File(path);
+                LocalFileInfo info = LocalFileInfo.create(localFile);
+                fileList.add(info);
+            }
+        }
+        return fileList;
+    }
 }

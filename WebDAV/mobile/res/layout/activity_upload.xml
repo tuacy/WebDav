@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/activity_background"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/title_id"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/action_bar_background_blue"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingLeft="@dimen/padding_mini_2"
+        android:paddingRight="@dimen/padding_mini_2">
+
+        <Button
+            android:id="@+id/select_back_btn_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:background="@drawable/return_btn_selector"
+            android:paddingLeft="@dimen/padding_tiny_3"
+            android:paddingRight="@dimen/padding_tiny_3"
+            android:minWidth="@dimen/limited_button_shape_mini_width_height"
+            android:minHeight="@dimen/limited_button_shape_mini_width_height" />
+
+        <Button
+            android:id="@+id/select_new_dir_btn_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/transparent_btn_selecter"
+            android:paddingLeft="@dimen/padding_tiny_3"
+            android:paddingRight="@dimen/padding_tiny_3"
+            android:textColor="@drawable/background_color_normal_white_select_blue"
+            android:textSize="@dimen/text_size_small"
+            android:minWidth="@dimen/limited_button_shape_mini_width_height"
+            android:minHeight="@dimen/limited_button_shape_mini_width_height"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/select_title_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:gravity="center"
+            android:text="@string/str_select_files_upload"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/text_size_normal" />
+
+    </RelativeLayout>
+
+    <FrameLayout
+        android:id="@+id/activity_drive_browser_file_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/bottom_btn_id"
+        android:layout_below="@id/title_id" />
+
+    <TextView
+        android:id="@+id/ap_path_id"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/bottom_btn_id"
+        android:background="@drawable/upload_broswer_path"
+        android:ellipsize="start"
+        android:gravity="center_vertical"
+        android:paddingLeft="@dimen/padding_tiny_3"
+        android:singleLine="true"
+        android:textColor="@color/white"
+        android:textSize="@dimen/text_size_small" />
+
+    <RelativeLayout
+        android:id="@+id/bottom_btn_id"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:alpha="0.9"
+        android:background="@drawable/drive_browser_function_bar_background"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingLeft="@dimen/padding_mini_2"
+        android:paddingRight="@dimen/padding_mini_2"
+        android:minHeight="@dimen/limited_button_shape_mini_width_height"
+        android:minWidth="@dimen/limited_button_shape_mini_width_height">
+
+        <Button
+            android:id="@+id/left_btn_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:background="@drawable/homeshare_delete_button_pressed_drawable"
+            android:layout_marginLeft="@dimen/margin_tiny_2"
+            android:text="@string/str_select_ap_save_path"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/text_size_small"
+            android:minWidth="@dimen/limited_button_shape_mini_width_height"
+            android:minHeight="@dimen/limited_button_shape_mini_width_height" />
+
+        <Button
+            android:id="@+id/right_btn_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/homeshare_delete_button_pressed_drawable"
+            android:layout_marginRight="@dimen/margin_tiny_2"
+            android:text="@string/str_upload"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/text_size_small"
+            android:minWidth="@dimen/limited_button_shape_mini_width_height"
+            android:minHeight="@dimen/limited_button_shape_mini_width_height" />
+    </RelativeLayout>
+</RelativeLayout>

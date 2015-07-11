@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="@dimen/fb_gridview_width_height"
+    android:layout_height="@dimen/fb_gridview_width_height"
+    android:background="@drawable/image_video_gridview_background"
+    android:padding="@dimen/padding_mini_2"
+    android:orientation="vertical">
+
+    <ImageView
+        android:id="@+id/top_left_img_id"
+        android:layout_width="@dimen/fb_gridview_item_width_height"
+        android:layout_height="@dimen/fb_gridview_item_width_height"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:scaleType="fitXY" />
+
+    <ImageView
+        android:id="@+id/top_right_img_id"
+        android:layout_width="@dimen/fb_gridview_item_width_height"
+        android:layout_height="@dimen/fb_gridview_item_width_height"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:scaleType="fitXY" />
+
+    <ImageView
+        android:id="@+id/bottom_left_img_id"
+        android:layout_width="@dimen/fb_gridview_item_width_height"
+        android:layout_height="@dimen/fb_gridview_item_width_height"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:scaleType="fitXY" />
+
+    <ImageView
+        android:id="@+id/bottom_right_img_id"
+        android:layout_width="@dimen/fb_gridview_item_width_height"
+        android:layout_height="@dimen/fb_gridview_item_width_height"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:scaleType="fitXY" />
+
+    <ImageView
+        android:id="@+id/video_logo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:background="@drawable/image_or_video_gridview_video_icon"
+        />
+
+    <RelativeLayout
+        android:id="@+id/albume_info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:alpha="0.9"
+        android:background="@drawable/image_or_video_gridview_background_text">
+
+        <TextView
+            android:id="@+id/albume_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+
+            android:textColor="@color/white"
+            android:gravity="center"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/margin_tiny_3" />
+
+        <TextView
+            android:id="@+id/albume_photo_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/margin_tiny_3"
+            android:textColor="@color/white"
+            android:gravity="center"
+            android:layout_centerVertical="true"
+            />
+
+    </RelativeLayout>
+
+</RelativeLayout>

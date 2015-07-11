@@ -40,4 +40,6 @@ dependencies {
     compile 'com.jakewharton:butterknife:6.1.0'
     compile 'in.srain.cube:ultra-ptr:1.0.9@aar'
     compile 'com.parse.bolts:bolts-android:1.2.0'
+    compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.4'
+    compile 'com.squareup.picasso:picasso:2.4.0'
 }

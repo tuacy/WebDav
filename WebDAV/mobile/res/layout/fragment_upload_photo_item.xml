@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="@dimen/grid_view_item_width"
+    android:layout_height="@dimen/grid_view_item_width">
+
+    <ImageView
+        android:id="@+id/image_id"
+        android:scaleType="centerCrop"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:maxWidth="@dimen/grid_view_item_width"
+        android:maxHeight="@dimen/grid_view_item_width" />
+
+    <ImageView
+        android:id="@+id/select_id"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/icon_item_selected"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:paddingRight="@dimen/padding_tiny_3"
+        android:paddingTop="@dimen/padding_tiny_3" />
+</RelativeLayout>
