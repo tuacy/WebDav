@@ -393,7 +393,11 @@ public class LocalFileExplorer implements FileExplorer {
 	public String pwd(Boolean withoutBaseUrl) {
 		String rootPath = mRootDir.getPath();
 		String curPath = mCurrentDir.getPath();
-		return curPath.replaceAll(rootPath.endsWith("/") ? rootPath.substring(0, rootPath.length() - 1) : rootPath, "");
+		if (!withoutBaseUrl) {
+			return curPath.replaceAll(rootPath.endsWith("/") ? rootPath.substring(0, rootPath.length() - 1) : rootPath, "");
+		} else {
+			return curPath;
+		}
 	}
 
 	@Override

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:background="@drawable/drive_browser_title_edit_background"
+    android:paddingLeft="@dimen/padding_mini_2"
+    android:paddingRight="@dimen/padding_mini_2"
+    android:gravity="center">
+
+    <Button
+        android:id="@+id/top_cancel_id"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:paddingLeft="@dimen/padding_tiny_3"
+        android:paddingRight="@dimen/padding_tiny_3"
+        android:background="@drawable/transparent_btn_selecter"
+        android:textColor="@drawable/background_color_normal_white_select_blue"
+        android:textSize="@dimen/text_size_small"
+        android:text="@string/cancel"
+        android:minWidth="@dimen/limited_button_shape_mini_width_height"
+        android:minHeight="@dimen/limited_button_shape_mini_width_height" />
+
+    <TextView
+        android:id="@+id/top_center_info_id"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/text_size_small"
+        android:gravity="center" />
+
+    <Button
+        android:id="@+id/top_select_all_not_id"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:paddingLeft="@dimen/padding_tiny_3"
+        android:paddingRight="@dimen/padding_tiny_3"
+        android:textColor="@drawable/background_color_normal_white_select_blue"
+        android:textSize="@dimen/text_size_small"
+        android:background="@drawable/transparent_btn_selecter"
+        android:minWidth="@dimen/limited_button_shape_mini_width_height"
+        android:minHeight="@dimen/limited_button_shape_mini_width_height" />
+
+</RelativeLayout>

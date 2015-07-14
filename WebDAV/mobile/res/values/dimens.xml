@@ -81,4 +81,8 @@
 
     <dimen name="grid_view_item_width">150dp</dimen>
     <dimen name="grid_view_item_height">90dp</dimen>
+
+    <!-- Transfer list-->
+    <dimen name="transfer_list_tab_height">40dp</dimen>
+    <dimen name="fb_transfer_tip_height">4dp</dimen>
 </resources>

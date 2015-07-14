@@ -50,4 +50,11 @@
         <item name="android:windowExitAnimation">@anim/sort_popup_window_exit</item>
     </style>
 
+    <style name="DefaultCircleProgressBar">
+        <item name="progress_background">@drawable/background_hard_disk_progress_background</item>
+        <item name="progress_drawable">@drawable/background_hard_disk_progress_drawable</item>
+        <item name="progress_max">100</item>
+        <item name="progress_percent">0</item>
+    </style>
+
 </resources>

@@ -106,4 +106,7 @@
     <string name="str_choose_file_type">Choose file Type</string>
     <string name="str_choose_local_sync_file">Local Sync Dir</string>
     <string name="str_choose_remote_sync_file">Remote Sync Dir</string>
+
+
+    <string name="str_select_all">Select All</string>
 </resources>

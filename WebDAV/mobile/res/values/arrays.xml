@@ -31,4 +31,12 @@
         <item>@string/sort_by_date</item>
         <item>@string/sort_by_type</item>
     </array>
+
+    <array name="file_broswer_trans_edit_icon">
+        <item>@drawable/icon_delete_drawable</item>
+    </array>
+
+    <string-array name="file_broswer_trans_edit_txt">
+        <item>@string/str_delete</item>
+    </string-array>
 </resources>

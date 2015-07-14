@@ -10,21 +10,20 @@ import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.vae.wuyunxing.webdav.library.FileBrowserFactory;
 import com.vae.wuyunxing.webdav.library.FileCategory;
 import com.vae.wuyunxing.webdav.library.FileExplorer;
 import com.vae.wuyunxing.webdav.library.FileInfo;
 import com.vae.wuyunxing.webdav.library.exception.DirectoryAlreadyExistsException;
 import com.vae.wuyunxing.webdav.library.filter.FileFilter;
 import com.vae.wuyunxing.webdav.library.imp.local.LocalFileExplorer;
+import com.vae.wuyunxing.webdav.library.imp.local.LocalPath;
 import com.vae.wuyunxing.webdav.library.sort.FileSorter;
 import com.vae.wuyunxing.webdav.library.util.FileUtil;
 import com.vae.wuyunxing.webdav.mobile.MobileBaseActivity;
 import com.vae.wuyunxing.webdav.mobile.R;
 import com.vae.wuyunxing.webdav.mobile.main.message.DirChangedEvent;
 import com.vae.wuyunxing.webdav.mobile.main.message.FilterFileEvent;
-import com.vae.wuyunxing.webdav.mobile.main.message.SelectRelativePathEvent;
-import com.vae.wuyunxing.webdav.mobile.main.message.SelectUploadPathEvent;
-import com.vae.wuyunxing.webdav.mobile.main.message.StartMoveRemoteFileEvent;
 import com.vae.wuyunxing.webdav.mobile.main.message.StartUploadEvent;
 import com.vae.wuyunxing.webdav.mobile.widget.CreateNewFolderDialog;
 
@@ -44,6 +43,10 @@ import in.srain.cube.views.ptr.PtrDefaultHandler;
 import in.srain.cube.views.ptr.PtrFrameLayout;
 
 public class LocalFilePathSelectActivity extends MobileBaseActivity{
+
+    private final int ALL_STORAGE_FILE_LIST = 1;
+    private final int NORMAL_FILE_LIST      = 2;
+
     @InjectView(R.id.drive_browser_ptr_frame_list)
     PtrFrameLayout mPtrFrameList;
 
@@ -57,28 +60,22 @@ public class LocalFilePathSelectActivity extends MobileBaseActivity{
     TextView mListHint;
 
     @InjectView(R.id.select_path_id)
-    TextView sambaPath;
+    TextView mSelectPath;
 
     @InjectView(R.id.select_title_id)
     TextView mTitle;
 
     private Context mContext;
-
-
-    public static final String KEY_TYPE                 = "key_type";
-    public static final int    PATH_SELECT_FOR_MOVE     = 0;
-    public static final int    PATH_SELECT_FOR_UPLOAD   = 1;
-    public static final int    PATH_SELECT_FOR_RELATIVE = 2;
+    private int mCurrentFileList = ALL_STORAGE_FILE_LIST;
 
     /* Explorer */
-    private FileExplorer mFileExplorer;
+    private FileExplorer   mFileExplorer;
     private List<FileInfo> mDispFileList;
 
     /* States */
-    private int        mFilterType     = FilterFileEvent.FILTER_TYPE_ALL;
-    private FileSorter mSorter         = FileSorter.FILE_NAME_ASCENDING;
-    private boolean    mIsRefreshing   = false;
-    private int mSelectFor;
+    private FileSorter mSorter          = FileSorter.FILE_NAME_ASCENDING;
+    private boolean    mIsRefreshing    = false;
+    private String     mCurrentRootPath = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,11 +85,10 @@ public class LocalFilePathSelectActivity extends MobileBaseActivity{
 
         mContext = this;
 
-        mSelectFor = getIntent().getIntExtra(KEY_TYPE, PATH_SELECT_FOR_MOVE);
         initPtrFrameLayout(mPtrFrameList);
         initView();
 
-        getLocalFileList();
+        getAllStorageFileList();
     }
 
     @Override
@@ -106,7 +102,11 @@ public class LocalFilePathSelectActivity extends MobileBaseActivity{
             @Override
             public void onRefreshBegin(PtrFrameLayout ptrFrameLayout) {
                 refreshBegin();
-                updateCurrentFileList();
+                if (ALL_STORAGE_FILE_LIST == mCurrentFileList) {
+                    getAllStorageFileList();
+                } else {
+                    updateCurrentFileList(mCurrentRootPath);
+                }
             }
         });
     }
@@ -116,7 +116,8 @@ public class LocalFilePathSelectActivity extends MobileBaseActivity{
         mListView.setAdapter(new FileListAdapter(LayoutInflater.from(LocalFilePathSelectActivity.this)));
     }
 
-    private void getLocalFileList() {
+    private void getAllStorageFileList() {
+        mCurrentFileList = ALL_STORAGE_FILE_LIST;
         Task.call(new Callable<Void>() {
             @Override
             public Void call() throws Exception {
@@ -136,13 +137,60 @@ public class LocalFilePathSelectActivity extends MobileBaseActivity{
             @Override
             public Void then(Task<List<FileInfo>> task) throws Exception {
                 mDispFileList = task.getResult();
-                updateFileListView(mDispFileList);
+                updateFileListView(mDispFileList, true);
                 return null;
             }
         }, Task.UI_THREAD_EXECUTOR);
     }
 
+    private void updateCurrentFileList(final String path) {
+        mCurrentFileList = NORMAL_FILE_LIST;
+        Task.call(new Callable<Void>() {
+            @Override
+            public Void call() throws Exception {
+                if (!isRefreshing()) {
+                    showWaitingDialog();
+                }
+                if (mFileExplorer == null) {
+                    try {
+                        LocalPath localPath = new LocalPath(path, "");
+                        mFileExplorer = (LocalFileExplorer) FileBrowserFactory.createLocalFileExplorer(localPath);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+                return null;
+            }
+        }).onSuccess(new Continuation<Void, List<FileInfo>>() {
+            @Override
+            public List<FileInfo> then(Task<Void> task) throws Exception {
+                return accessAndGetFileList(".");
+            }
+        }, Task.BACKGROUND_EXECUTOR).continueWith(new Continuation<List<FileInfo>, Void>() {
+            @Override
+            public Void then(Task<List<FileInfo>> task) throws Exception {
+                List<FileInfo> fileList = task.getResult();
+                updateFileListView(fileList, false);
+                return null;
+            }
+        }, Task.UI_THREAD_EXECUTOR);
+    }
+
+    private List<FileInfo> accessAndGetFileList(final String path) {
+        try {
+            mFileExplorer.cd(path);
+            List<FileInfo> tempList = mFileExplorer.ls("-l");
+            mDispFileList = sortAndFilterFiles(tempList);
+            return mDispFileList;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
     private void getAndDisplayFileList(final String path) {
+        mCurrentFileList = NORMAL_FILE_LIST;
         Task.call(new Callable<Void>() {
             @Override
             public Void call() throws Exception {
@@ -172,17 +220,21 @@ public class LocalFilePathSelectActivity extends MobileBaseActivity{
                         e.printStackTrace();
                     }
                 }
-                updateFileListView(mDispFileList);
+                updateFileListView(mDispFileList, false);
                 return null;
             }
         }, Task.UI_THREAD_EXECUTOR);
     }
 
     private void updateCurrentFileList() {
-        getLocalFileList();
+        if (ALL_STORAGE_FILE_LIST == mCurrentFileList) {
+            getAllStorageFileList();
+        } else {
+            updateCurrentFileList(mCurrentRootPath);
+        }
     }
 
-    private void updateFileListView(List<FileInfo> fileList) {
+    private void updateFileListView(List<FileInfo> fileList, boolean isStorageList) {
         dismissWaitingDialog();
         if (isRefreshing()) {
             refreshComplete();
@@ -231,7 +283,7 @@ public class LocalFilePathSelectActivity extends MobileBaseActivity{
     }
 
     private List<FileInfo> sortAndFilterFiles(final List<FileInfo> all) {
-        return sortFiles(filterFiles(all, mFilterType), mSorter);
+        return sortFiles(filterFiles(all, FilterFileEvent.FILTER_TYPE_ALL), mSorter);
     }
 
     private void showEmptyHint() {
@@ -266,10 +318,15 @@ public class LocalFilePathSelectActivity extends MobileBaseActivity{
 
     @OnItemClick(R.id.drive_browser_file_list)
     void fileClick(int position) {
-
         FileInfo file = (FileInfo) mListView.getAdapter().getItem(position);
         if (file.isDir()) {
-            getAndDisplayFileList(file.getName());
+            if (ALL_STORAGE_FILE_LIST == mCurrentFileList) {
+                mCurrentRootPath = file.getPath();
+                mFileExplorer = null;
+                updateCurrentFileList(mCurrentRootPath);
+            } else {
+                getAndDisplayFileList(file.getName());
+            }
         }
     }
 
@@ -338,10 +395,15 @@ public class LocalFilePathSelectActivity extends MobileBaseActivity{
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         switch (keyCode) {
             case KeyEvent.KEYCODE_BACK:
-                if (mFileExplorer == null || mFileExplorer.isRoot()) {
+                if (ALL_STORAGE_FILE_LIST == mCurrentFileList) {
                     onBackPressed();
                 } else {
-                    getAndDisplayFileList("..");
+                    if (mFileExplorer == null || mFileExplorer.isRoot()) {
+                        getAllStorageFileList();
+                        mFileExplorer = null;
+                    } else {
+                        getAndDisplayFileList("..");
+                    }
                 }
                 return true;
             default:
@@ -358,8 +420,10 @@ public class LocalFilePathSelectActivity extends MobileBaseActivity{
     @OnClick(R.id.right_btn_id)
     void clickOnConfirmBtn() {
         if (mFileExplorer != null) {
-            EventBus.getDefault().post(new StartUploadEvent(mFileExplorer.pwd(false)));
+            EventBus.getDefault().post(new StartUploadEvent(mFileExplorer.pwd(true)));
+            onBackPressed();
+        } else {
+            toasts("please select current save path");
         }
-        onBackPressed();
     }
 }

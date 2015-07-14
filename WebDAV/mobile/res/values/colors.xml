@@ -39,4 +39,7 @@
     <color name="dialog_edit_background_normal">#ffdfdfdf</color>
 
     <color name="file_broswer_activity_bg_color">#ffeeeeee</color>
+    <!-- transfer list-->
+    <color name="fb_transfer_tip">#ff169cf9</color>
+
 </resources>

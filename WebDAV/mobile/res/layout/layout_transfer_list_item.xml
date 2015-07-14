@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/display_title_id"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/margin_mini_1"
+        android:ellipsize="middle"
+        android:singleLine="true"
+        android:textColor="@color/drive_browser_file_list_item_date"
+        android:textSize="@dimen/text_size_small"
+        android:visibility="gone" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/list_item_background_selector"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/file_info_img"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/margin_tiny_1"
+            android:layout_marginLeft="@dimen/margin_tiny_1"
+            android:layout_marginRight="@dimen/margin_tiny_1"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/margin_tiny_1" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_gravity="center"
+            android:layout_marginRight="@dimen/margin_tiny_2"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/transfer_list_file_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="middle"
+                android:paddingLeft="@dimen/padding_tiny_3"
+                android:paddingTop="@dimen/margin_tiny_1"
+                android:singleLine="true"
+                android:textColor="@color/drive_browser_file_list_item_name"
+                android:textSize="@dimen/text_size_small" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingLeft="@dimen/padding_tiny_3">
+
+                <TextView
+                    android:id="@+id/state_id"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="middle"
+                    android:singleLine="true"
+                    android:textColor="@color/drive_browser_file_list_item_date"
+                    android:textSize="@dimen/text_size_tiny"
+                    android:visibility="visible" />
+
+                <TextView
+                    android:id="@+id/date_id"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/margin_tiny_1"
+                    android:ellipsize="middle"
+                    android:singleLine="true"
+                    android:textColor="@color/drive_browser_file_list_item_date"
+                    android:textSize="@dimen/text_size_tiny" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginRight="@dimen/margin_tiny_1"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/select_id"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:scaleType="fitCenter"
+                android:visibility="gone" />
+
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/text_view_progress_percent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:textColor="@color/drive_browser_file_list_item_date" />
+
+                <com.vae.wuyunxing.webdav.mobile.widget.CircleProgressBar
+                    xmlns:circlebar="http://schemas.android.com/apk/res/com.vae.wuyunxing.webdav.mobile"
+                    android:id="@+id/upload_progress_bar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:visibility="gone"
+                    circlebar:progress_background="@drawable/icon_upload_ing"
+                    circlebar:progress_drawable="@drawable/icon_upload_ing_drawable" />
+            </FrameLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

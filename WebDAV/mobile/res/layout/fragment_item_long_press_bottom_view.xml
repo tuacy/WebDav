@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:background="@drawable/drive_browser_function_bar_background"
+    android:layout_gravity="center_horizontal"
+    android:gravity="center">
+
+    <GridView
+        android:id="@+id/bottom_gridview_id"
+        android:layout_gravity="center"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="@dimen/padding_tiny_3"
+        android:paddingBottom="@dimen/padding_tiny_3"
+        android:listSelector="@android:color/transparent"
+        android:gravity="center"
+        android:numColumns="auto_fit">
+
+    </GridView>
+
+</LinearLayout>

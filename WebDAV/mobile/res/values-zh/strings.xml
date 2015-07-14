@@ -107,4 +107,6 @@
     <string name="str_choose_file_type">选择文件类型</string>
     <string name="str_choose_local_sync_file">选择本地同步目录</string>
     <string name="str_choose_remote_sync_file">云端同步目录</string>
+
+    <string name="str_select_all">全选</string>
 </resources>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="PageIndicator">
+        <attr name="currentSrc" format="reference" />
+        <attr name="defaultSrc" format="reference" />
+        <attr name="pageCount" format="integer" />
+        <attr name="currentPage" format="integer" />
+    </declare-styleable>
+
+    <declare-styleable name="CircleProgressBar">
+        <attr name="progress_background" format="reference" />
+        <attr name="progress_drawable" format="reference" />
+        <attr name="progress_percent" format="integer" />
+        <attr name="progress_max" format="integer" />
+    </declare-styleable>
+    <attr name="CircleProgressBarStyle" format="reference" />
+</resources>

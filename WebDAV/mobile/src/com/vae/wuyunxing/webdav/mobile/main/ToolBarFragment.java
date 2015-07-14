@@ -191,7 +191,7 @@ public class ToolBarFragment extends Fragment {
 
     @OnClick(R.id.drive_browser_tool_transfer_list)
     void showTransferLis() {
-//        startActivity(new Intent(getActivity(), TransferListActivity.class));
+        startActivity(new Intent(getActivity(), TransferListActivity.class));
     }
 
 }
