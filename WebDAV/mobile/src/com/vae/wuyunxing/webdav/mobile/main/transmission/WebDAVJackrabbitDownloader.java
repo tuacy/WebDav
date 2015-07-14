@@ -9,10 +9,11 @@ import com.vae.wuyunxing.webdav.library.loader.jackrabbit.transmission.Jackrabbi
 import com.vae.wuyunxing.webdav.library.log.MKLog;
 import com.vae.wuyunxing.webdav.library.util.PathUtil;
 import com.vae.wuyunxing.webdav.mobile.MobileApplication;
+import com.vae.wuyunxing.webdav.mobile.R;
 import com.vae.wuyunxing.webdav.mobile.main.message.CancellationEvent;
 import com.vae.wuyunxing.webdav.mobile.main.message.CompletionEvent;
 import com.vae.wuyunxing.webdav.mobile.main.message.FailureEvent;
-import com.vae.wuyunxing.webdav.mobile.main.message.TransferStartEvent;
+import com.vae.wuyunxing.webdav.mobile.main.transfer.message.TransferStartEvent;
 import com.vae.wuyunxing.webdav.mobile.main.message.UpdateProgressEvent;
 import com.vae.wuyunxing.webdav.mobile.storage.DownloadInfoRepository;
 
@@ -43,10 +44,11 @@ public class WebDAVJackrabbitDownloader extends JackrabbitDownloader {
 	@Override
 	protected JackrabbitPath getJackrabbitPath() {
         DownloadInfo info = mInfo;
-        String password = "admin";
-        String domain = "192.168.1.6";
+		String domain = mContext.getResources().getString(R.string.webdav_domain);
+		String root = mContext.getResources().getString(R.string.webdav_root);
+		String password = mContext.getResources().getString(R.string.webdav_password);
         return new JackrabbitPath(domain, PathUtil.appendPath(false, JackrabbitPath.MOUNT_DIR, info.getFrom(), info.getFilename()),
-                                  "root", password);
+								  root, password);
 	}
 
 	private void setStateAndProgress(int state, int progress) {

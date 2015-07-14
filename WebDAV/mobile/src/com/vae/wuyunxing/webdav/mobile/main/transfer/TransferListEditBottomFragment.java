@@ -1,4 +1,4 @@
-package com.vae.wuyunxing.webdav.mobile.main;
+package com.vae.wuyunxing.webdav.mobile.main.transfer;
 
 
 import android.app.Fragment;
@@ -12,7 +12,7 @@ import android.widget.GridView;
 
 
 import com.vae.wuyunxing.webdav.mobile.R;
-import com.vae.wuyunxing.webdav.mobile.main.message.TransferListDeleteEvent;
+import com.vae.wuyunxing.webdav.mobile.main.transfer.message.TransferListDeleteEvent;
 
 import de.greenrobot.event.EventBus;
 

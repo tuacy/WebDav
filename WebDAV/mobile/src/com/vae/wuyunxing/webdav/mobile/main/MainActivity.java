@@ -1,5 +1,6 @@
 package com.vae.wuyunxing.webdav.mobile.main;
 
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -35,10 +36,13 @@ public class MainActivity extends MobileBaseActivity{
     public static final int SORT_TYPE_DATE      = 2;
     public static final int SORT_TYPE_SUFFIX    = 3;
 
+    private Context mContext;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_file_browser_main);
+        mContext = this;
         ButterKnife.inject(this);
         replaceFragment(R.id.activity_drive_browser_action_bar, NormalActionBarFragment.class);
         replaceFragment(R.id.activity_drive_browser_file_list, RemoteFileListFragment.class);
@@ -85,8 +89,7 @@ public class MainActivity extends MobileBaseActivity{
 
         String httpRequest = "http://" + WebDAVFilePlayService.IP + ':' + WebDAVFilePlayService.PORT + WebDAVFileServer.WEBDAV_CONTENT_EXPORT_URI;
         String ext = Utils.getFileExtension(curPath);
-
-        String routerIP = "192.168.1.6";
+        String routerIP = mContext.getResources().getString(R.string.webdav_domain);
         String WebDAVFileCurrentEncodePath = null;
         try {
             WebDAVFileCurrentEncodePath = URLEncoder.encode(curPath, "UTF-8");

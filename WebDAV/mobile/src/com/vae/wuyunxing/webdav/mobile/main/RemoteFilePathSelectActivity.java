@@ -124,11 +124,10 @@ public class RemoteFilePathSelectActivity extends MobileBaseActivity {
 		mListView.setAdapter(new FileListAdapter(LayoutInflater.from(RemoteFilePathSelectActivity.this)));
 	}
 
-	private JackrabbitPath getJackrabbitPath(String password) {
-		String domain = "192.168.1.6";
-		String sambaUser = "root";
-		String currentUser = "hardy";
-		String userStoragePath = "Home";
+	private JackrabbitPath getJackrabbitPath() {
+		String domain = getResources().getString(R.string.webdav_domain);
+		String sambaUser = getResources().getString(R.string.webdav_root);
+		String password = getResources().getString(R.string.webdav_password);
 		String path = PathUtil.appendPath(true, "/");
 		return new JackrabbitPath(domain, path, sambaUser, password);
 	}
@@ -148,9 +147,8 @@ public class RemoteFilePathSelectActivity extends MobileBaseActivity {
 		}, Task.UI_THREAD_EXECUTOR).continueWith(new Continuation<Void, Void>() {
 			@Override
 			public Void then(Task<Void> task) throws Exception {
-				String password = "admin";
 				if (mFileExplorer == null) {
-					JackrabbitPath path = getJackrabbitPath(password);
+					JackrabbitPath path = getJackrabbitPath();
 					mFileExplorer = FileBrowserFactory.createJackrabbitFileExplorer(path, mContext);
 				}
 

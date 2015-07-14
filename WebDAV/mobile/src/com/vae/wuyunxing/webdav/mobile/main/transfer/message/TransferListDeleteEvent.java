@@ -1,4 +1,4 @@
-package com.vae.wuyunxing.webdav.mobile.main.message;
+package com.vae.wuyunxing.webdav.mobile.main.transfer.message;
 
 public class TransferListDeleteEvent {
 

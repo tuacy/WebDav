@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="webdav_domain">192.168.31.153</string>
+    <string name="webdav_root">root</string>
+    <string name="webdav_password">admin</string>
+</resources>

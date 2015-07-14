@@ -1,4 +1,4 @@
-package com.vae.wuyunxing.webdav.mobile.main;
+package com.vae.wuyunxing.webdav.mobile.main.transfer;
 
 
 import android.app.Fragment;
@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 
 import com.vae.wuyunxing.webdav.library.log.MKLog;
 import com.vae.wuyunxing.webdav.mobile.R;
-import com.vae.wuyunxing.webdav.mobile.main.message.TransferListOperationEvent;
+import com.vae.wuyunxing.webdav.mobile.main.transfer.message.TransferListOperationEvent;
 
 import de.greenrobot.event.EventBus;
 

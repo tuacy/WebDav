@@ -15,6 +15,7 @@ import com.vae.wuyunxing.webdav.mobile.R;
 import com.vae.wuyunxing.webdav.mobile.main.message.CreateFileEvent;
 import com.vae.wuyunxing.webdav.mobile.main.message.FilterFileEvent;
 import com.vae.wuyunxing.webdav.mobile.main.message.SortFileEvent;
+import com.vae.wuyunxing.webdav.mobile.main.transfer.TransferListActivity;
 import com.vae.wuyunxing.webdav.mobile.widget.CategoryPopupWindow;
 import com.vae.wuyunxing.webdav.mobile.widget.CreateNewFolderDialog;
 import com.vae.wuyunxing.webdav.mobile.widget.SortPopupWindow;

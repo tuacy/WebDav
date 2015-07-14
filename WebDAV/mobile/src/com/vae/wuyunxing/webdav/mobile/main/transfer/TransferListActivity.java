@@ -1,4 +1,4 @@
-package com.vae.wuyunxing.webdav.mobile.main;
+package com.vae.wuyunxing.webdav.mobile.main.transfer;
 
 
 import android.app.FragmentTransaction;
@@ -16,10 +16,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.vae.wuyunxing.webdav.mobile.R;
-import com.vae.wuyunxing.webdav.mobile.main.message.TransferEditCancelEvent;
-import com.vae.wuyunxing.webdav.mobile.main.message.TransferListEnterEditEvent;
-import com.vae.wuyunxing.webdav.mobile.main.message.TransferListExitEditEvent;
-import com.vae.wuyunxing.webdav.mobile.main.message.TransferListOperationEvent;
+import com.vae.wuyunxing.webdav.mobile.main.transfer.message.TransferEditCancelEvent;
+import com.vae.wuyunxing.webdav.mobile.main.transfer.message.TransferListEnterEditEvent;
+import com.vae.wuyunxing.webdav.mobile.main.transfer.message.TransferListExitEditEvent;
+import com.vae.wuyunxing.webdav.mobile.main.transfer.message.TransferListOperationEvent;
 
 import de.greenrobot.event.EventBus;
 

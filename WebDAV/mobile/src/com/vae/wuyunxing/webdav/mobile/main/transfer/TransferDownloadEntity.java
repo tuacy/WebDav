@@ -1,119 +1,119 @@
-package com.vae.wuyunxing.webdav.mobile.main;
+package com.vae.wuyunxing.webdav.mobile.main.transfer;
 
 import java.util.Date;
 
-import greendao.UploadInfo;
+import greendao.DownloadInfo;
 
-public class TransferUploadEntity implements TransferEntity {
+public class TransferDownloadEntity implements TransferEntity {
 
-	private UploadInfo uploadInfo;
+	DownloadInfo downloadInfo;
 
-	public TransferUploadEntity(UploadInfo uploadInfo) {
-		this.uploadInfo = uploadInfo;
+	public TransferDownloadEntity(DownloadInfo downloadInfo) {
+		this.downloadInfo = downloadInfo;
 	}
 
-	public UploadInfo getUploadInfo() {
-		return uploadInfo;
+	public DownloadInfo getDownloadInfo() {
+		return downloadInfo;
 	}
 
 	@Override
 	public Long getId() {
-		return uploadInfo.getId();
+		return downloadInfo.getId();
 	}
 
 	@Override
 	public void setId(Long id) {
-		uploadInfo.setId(id);
+		downloadInfo.setId(id);
 	}
 
 	@Override
 	public String getUser() {
-		return uploadInfo.getUser();
+		return downloadInfo.getUser();
 	}
 
 	@Override
 	public void setUser(String user) {
-		uploadInfo.setUser(user);
+		downloadInfo.setUser(user);
 	}
 
 	@Override
 	public String getFilename() {
-		return uploadInfo.getFilename();
+		return downloadInfo.getFilename();
 	}
 
 	@Override
 	public void setFilename(String filename) {
-		uploadInfo.setFilename(filename);
+		downloadInfo.setFilename(filename);
 	}
 
 	@Override
 	public String getFrom() {
-		return uploadInfo.getFrom();
+		return downloadInfo.getFrom();
 	}
 
 	@Override
 	public void setFrom(String from) {
-		uploadInfo.setFrom(from);
+		downloadInfo.setFrom(from);
 	}
 
 	@Override
 	public String getTo() {
-		return uploadInfo.getTo();
+		return downloadInfo.getTo();
 	}
 
 	@Override
 	public void setTo(String to) {
-		uploadInfo.setTo(to);
+		downloadInfo.setFrom(to);
 	}
 
 	@Override
 	public Date getUploadTime() {
-		return uploadInfo.getUploadTime();
+		return downloadInfo.getUploadTime();
 	}
 
 	@Override
 	public void setUploadTime(Date uploadTime) {
-		uploadInfo.setUploadTime(uploadTime);
+		downloadInfo.setUploadTime(uploadTime);
 	}
 
 	@Override
 	public Integer getPercent() {
-		return uploadInfo.getPercent();
+		return downloadInfo.getPercent();
 	}
 
 	@Override
 	public void setPercent(Integer percent) {
-		uploadInfo.setPercent(percent);
+		downloadInfo.setPercent(percent);
 	}
 
 	@Override
 	public Integer getState() {
-		return uploadInfo.getState();
+		return downloadInfo.getState();
 	}
 
 	@Override
 	public void setState(Integer state) {
-		uploadInfo.setState(state);
+		downloadInfo.setState(state);
 	}
 
 	@Override
 	public Boolean getAutoSync() {
-		return uploadInfo.getAutoSyncUpload();
+		return downloadInfo.getAutoSyncDownload();
 	}
 
 	@Override
 	public void setAutoSync(Boolean autoSyncUpload) {
-		uploadInfo.setAutoSyncUpload(autoSyncUpload);
+		downloadInfo.setAutoSyncDownload(autoSyncUpload);
 	}
 
 	@Override
 	public Long getTotalSize() {
-		return uploadInfo.getTotalSize();
+		return downloadInfo.getTotalSize();
 	}
 
 	@Override
 	public void setTotalSize(Long totalSize) {
-		uploadInfo.setTotalSize(totalSize);
+		downloadInfo.setTotalSize(totalSize);
 	}
 
 	@Override

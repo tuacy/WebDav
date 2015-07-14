@@ -1,4 +1,4 @@
-package com.vae.wuyunxing.webdav.mobile.main;
+package com.vae.wuyunxing.webdav.mobile.main.transfer;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -13,12 +13,12 @@ import com.vae.wuyunxing.webdav.mobile.R;
 import com.vae.wuyunxing.webdav.mobile.main.message.CancellationEvent;
 import com.vae.wuyunxing.webdav.mobile.main.message.CompletionEvent;
 import com.vae.wuyunxing.webdav.mobile.main.message.FailureEvent;
-import com.vae.wuyunxing.webdav.mobile.main.message.TransferEditSelectAll;
-import com.vae.wuyunxing.webdav.mobile.main.message.TransferListDeleteEvent;
-import com.vae.wuyunxing.webdav.mobile.main.message.TransferListEnterEditEvent;
-import com.vae.wuyunxing.webdav.mobile.main.message.TransferListExitEditEvent;
-import com.vae.wuyunxing.webdav.mobile.main.message.TransferListSelectItemEvent;
-import com.vae.wuyunxing.webdav.mobile.main.message.TransferStartEvent;
+import com.vae.wuyunxing.webdav.mobile.main.transfer.message.TransferEditSelectAll;
+import com.vae.wuyunxing.webdav.mobile.main.transfer.message.TransferListDeleteEvent;
+import com.vae.wuyunxing.webdav.mobile.main.transfer.message.TransferListEnterEditEvent;
+import com.vae.wuyunxing.webdav.mobile.main.transfer.message.TransferListExitEditEvent;
+import com.vae.wuyunxing.webdav.mobile.main.transfer.message.TransferListSelectItemEvent;
+import com.vae.wuyunxing.webdav.mobile.main.transfer.message.TransferStartEvent;
 import com.vae.wuyunxing.webdav.mobile.main.message.UpdateProgressEvent;
 import com.vae.wuyunxing.webdav.mobile.storage.DownloadInfoRepository;
 import com.vae.wuyunxing.webdav.mobile.storage.UploadInfoRepository;
