@@ -19,9 +19,6 @@ import com.vae.wuyunxing.webdav.mobile.storage.UploadInfoRepository;
 import de.greenrobot.event.EventBus;
 import greendao.UploadInfo;
 
-/**
- * Created by Hans.Chen on 2015-07-02.
- */
 public class WebDAVJackrabbitUploader extends JackrabbitUploader {
 
 	private final UploadInfo mInfo;
@@ -49,7 +46,7 @@ public class WebDAVJackrabbitUploader extends JackrabbitUploader {
 		String domain = mContext.getResources().getString(R.string.webdav_domain);
 		String root = mContext.getResources().getString(R.string.webdav_root);
 		String password = mContext.getResources().getString(R.string.webdav_password);
-			return new JackrabbitPath(domain, PathUtil.appendPath(false, JackrabbitPath.MOUNT_DIR, info.getTo(), info.getFilename()),
+			return new JackrabbitPath(domain, PathUtil.appendPath(false, info.getTo(), info.getFilename()),
 									  root, password);
 	}
 

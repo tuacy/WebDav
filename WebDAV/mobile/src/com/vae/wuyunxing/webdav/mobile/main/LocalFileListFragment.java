@@ -374,9 +374,8 @@ public class LocalFileListFragment extends Fragment {
 
 	private TransferService.Param getUploadParam(FileInfo fileInfo, String uploadPath) {
 		String filename = fileInfo.getName();
-		String to = uploadPath.replaceFirst("/[^/]+", "");
 		String from = fileInfo.getParent();
-		return new TransferService.Param(filename, from, to, false, fileInfo.size(), fileInfo.hashCode());
+		return new TransferService.Param(filename, from, uploadPath, false, fileInfo.size(), fileInfo.hashCode());
 	}
 
 	public void onEventMainThread(UploadloadFileEvent event) {

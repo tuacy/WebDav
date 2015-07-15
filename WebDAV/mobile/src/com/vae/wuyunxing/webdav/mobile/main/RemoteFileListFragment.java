@@ -42,11 +42,11 @@ import com.vae.wuyunxing.webdav.mobile.main.message.MoveRemoteFileEvent;
 import com.vae.wuyunxing.webdav.mobile.main.message.PlayFileEvent;
 import com.vae.wuyunxing.webdav.mobile.main.message.RenameRemoteFileEvent;
 import com.vae.wuyunxing.webdav.mobile.main.message.SortFileEvent;
+import com.vae.wuyunxing.webdav.mobile.main.message.StartDownloadEvent;
 import com.vae.wuyunxing.webdav.mobile.main.message.StartMoveRemoteFileEvent;
 import com.vae.wuyunxing.webdav.mobile.main.message.StartUploadEvent;
 import com.vae.wuyunxing.webdav.mobile.main.transmission.TransferService;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -819,7 +819,7 @@ public class RemoteFileListFragment extends Fragment {
 		startActivity(intent);
 	}
 
-	public void onEventMainThread(StartUploadEvent event) {
+	public void onEventMainThread(StartDownloadEvent event) {
 		String localPath = event.selectLocalPath;
 		List<TransferService.Param> params = new ArrayList<TransferService.Param>();
 		params.clear();
@@ -839,13 +839,13 @@ public class RemoteFileListFragment extends Fragment {
 			EventBus.getDefault().post(new ExitEditModeEvent());
 			((MobileBaseActivity) getActivity()).toasts(getString(R.string.downloading_wait));
 		}
+		exitEditMode();
 	}
 
 	private TransferService.Param getDownloadParam(FileInfo fileInfo, String localPath) {
 		String filename = fileInfo.getName();
 		String to = localPath;
-		String parentPath = fileInfo.getParent();
-		String from = parentPath.replaceFirst("/[^/]+", "");
+		String from = fileInfo.getParent();
 		return new TransferService.Param(filename, from, to, false, fileInfo.size(), fileInfo.hashCode());
 	}
 }

@@ -47,7 +47,7 @@ public class WebDAVJackrabbitDownloader extends JackrabbitDownloader {
 		String domain = mContext.getResources().getString(R.string.webdav_domain);
 		String root = mContext.getResources().getString(R.string.webdav_root);
 		String password = mContext.getResources().getString(R.string.webdav_password);
-        return new JackrabbitPath(domain, PathUtil.appendPath(false, JackrabbitPath.MOUNT_DIR, info.getFrom(), info.getFilename()),
+        return new JackrabbitPath(domain, PathUtil.appendPath(false, info.getFrom(), info.getFilename()),
 								  root, password);
 	}
 

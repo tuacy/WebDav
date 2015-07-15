@@ -24,6 +24,7 @@ import com.vae.wuyunxing.webdav.mobile.MobileBaseActivity;
 import com.vae.wuyunxing.webdav.mobile.R;
 import com.vae.wuyunxing.webdav.mobile.main.message.DirChangedEvent;
 import com.vae.wuyunxing.webdav.mobile.main.message.FilterFileEvent;
+import com.vae.wuyunxing.webdav.mobile.main.message.StartDownloadEvent;
 import com.vae.wuyunxing.webdav.mobile.main.message.StartUploadEvent;
 import com.vae.wuyunxing.webdav.mobile.widget.CreateNewFolderDialog;
 
@@ -420,7 +421,7 @@ public class LocalFilePathSelectActivity extends MobileBaseActivity{
     @OnClick(R.id.right_btn_id)
     void clickOnConfirmBtn() {
         if (mFileExplorer != null) {
-            EventBus.getDefault().post(new StartUploadEvent(mFileExplorer.pwd(true)));
+            EventBus.getDefault().post(new StartDownloadEvent(mFileExplorer.pwd(true)));
             onBackPressed();
         } else {
             toasts("please select current save path");

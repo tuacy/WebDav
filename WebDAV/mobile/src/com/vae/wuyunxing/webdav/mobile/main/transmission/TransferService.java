@@ -11,6 +11,7 @@ import android.support.v4.util.LongSparseArray;
 import com.vae.wuyunxing.webdav.library.concurrent.AndroidExecutors;
 import com.vae.wuyunxing.webdav.library.log.MKLog;
 import com.vae.wuyunxing.webdav.mobile.main.message.CancellationEvent;
+import com.vae.wuyunxing.webdav.mobile.main.message.CompletionEvent;
 import com.vae.wuyunxing.webdav.mobile.main.message.FailureEvent;
 import com.vae.wuyunxing.webdav.mobile.main.message.UpdateProgressEvent;
 import com.vae.wuyunxing.webdav.mobile.storage.DownloadInfoRepository;
@@ -46,7 +47,6 @@ public class TransferService extends Service {
     private static final ExecutorService sDownloadExecutor = AndroidExecutors.newSingleThreadExecutor();
     private final LongSparseArray<Future<?>> mUploaders = new LongSparseArray<Future<?>>();
     private final LongSparseArray<Future<?>> mDownloaders = new LongSparseArray<Future<?>>();
-    private volatile boolean mCanRun = false;
 
     @Override
     public void onCreate() {
@@ -75,6 +75,26 @@ public class TransferService extends Service {
     }
 
     /** EventBus event (download and upload event) */
+    public void onEventAsync(CompletionEvent event) {
+        long id = event.mID;
+        String filename = event.mFilename;
+        if (event.mIsUpload) {
+            removeUploader(id);
+            if (!event.mIsSyncEvent) {
+                cancelUploadingNotification();
+                showUploadFinishNotification(filename);
+            }
+            notifyUploader(null);
+        } else {
+            removeDownloader(id);
+            if (!event.mIsSyncEvent) {
+                cancelDownloadingNotification();
+                showDownloadFinishNotification(filename);
+            }
+            notifyDownloader(null);
+        }
+    }
+
     public void onEventAsync(CancellationEvent event) {
         long id = event.mID;
         if (event.mIsUpload) {
@@ -82,11 +102,13 @@ public class TransferService extends Service {
             if (!event.mIsSyncEvent) {
                 cancelUploadingNotification();
             }
+            notifyUploader(null);
         } else {
             removeDownloader(id);
             if (!event.mIsSyncEvent) {
                 cancelDownloadingNotification();
             }
+            notifyDownloader(null);
         }
     }
 
@@ -99,12 +121,14 @@ public class TransferService extends Service {
                 cancelUploadingNotification();
                 showUploadFailNotification(filename);
             }
+            notifyUploader(null);
         } else {
             removeDownloader(id);
             if (!event.mIsSyncEvent) {
                 cancelDownloadingNotification();
                 showDownloadFailNotification(filename);
             }
+            notifyDownloader(null);
         }
     }
 
@@ -240,7 +264,7 @@ public class TransferService extends Service {
     private void notifyUploader(final Long id) {
         UploadInfo info;
         synchronized (mUploaders) {
-            if (mCanRun && mUploaders.size() <= 0 && (info = getNextUpload(id)) != null) {
+            if (mUploaders.size() <= 0 && (info = getNextUpload(id)) != null) {
                 Future<?> task = sUploadExecutor.submit(new WebDAVJackrabbitUploader(TransferService.this, info));
                 mUploaders.append(info.getId(), task);
             }
@@ -254,7 +278,7 @@ public class TransferService extends Service {
     private void notifyDownloader(final Long id) {
         DownloadInfo info;
         synchronized (mDownloaders) {
-            if (mCanRun && mDownloaders.size() <= 0 && (info = getNextDownload(id)) != null) {
+            if (mDownloaders.size() <= 0 && (info = getNextDownload(id)) != null) {
                 Future<?> task = sDownloadExecutor.submit(new WebDAVJackrabbitDownloader(TransferService.this, info));
                 mDownloaders.append(info.getId(), task);
             }
@@ -266,12 +290,12 @@ public class TransferService extends Service {
         long id;
 
         if (upload) {
-            UploadInfo info = new UploadInfo(null, "root", param.getFilename(), param.getFrom(), param.getTo(),
+            UploadInfo info = new UploadInfo(null, null, param.getFilename(), param.getFrom(), param.getTo(),
                     Calendar.getInstance().getTime(), 0, UploadInfoRepository.READY,
                     Boolean.valueOf(param.isAutoSync()), param.getTotalSize(), param.getHashCode());
             id = UploadInfoRepository.insertOrUpdate(context, info);
         } else {
-            DownloadInfo info = new DownloadInfo(null, "root", param.getFilename(), param.getFrom(), param.getTo(),
+            DownloadInfo info = new DownloadInfo(null, null, param.getFilename(), param.getFrom(), param.getTo(),
                     Calendar.getInstance().getTime(), 0, DownloadInfoRepository.READY,
                     Boolean.valueOf(param.isAutoSync()), param.getTotalSize(), param.getHashCode());
             id = DownloadInfoRepository.insertOrUpdate(context, info);
