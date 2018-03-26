@@ -29,11 +29,11 @@ public class JackrabbitPath {
 	}
 
 	public String getUrl() {
-		return "http://" + mHost + ":" + PORT + mPath;
+		return "http://" + mHost + mPath;
 	}
 
 	public String getBaseUrl() {
-		return "http://" + mHost + ":" + PORT;
+		return "http://" + mHost;
 	}
 
 	public void setHost(String domain) {

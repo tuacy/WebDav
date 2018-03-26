@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="webdav_domain">192.168.31.153</string>
-    <string name="webdav_root">root</string>
-    <string name="webdav_password">admin</string>
+    <string name="webdav_domain">dav.jianguoyun.com</string>
+    <string name="webdav_path">/dav</string>
+    <string name="webdav_root">1007178106@qq.com</string>
+    <string name="webdav_password">jianguoyun123456</string>
 </resources>

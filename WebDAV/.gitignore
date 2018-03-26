@@ -1,0 +1,6 @@
+/build
+.idea
+WebDAV.iml
+gradlew
+gradle
+gradlew.bat

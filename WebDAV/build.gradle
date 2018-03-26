@@ -5,37 +5,44 @@ import java.util.regex.Pattern
 
 buildscript {
     repositories {
-        mavenCentral()
+        google()
+        jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:1.1.0'
+        classpath 'com.android.tools.build:gradle:3.0.1'
     }
 }
 
 allprojects {
     repositories {
-        mavenCentral()
+        jcenter()
+        google()
     }
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
 }
 
 
 ext {
     compileSdkVersion = 15
-    buildToolsVersion = "21.1.2"
+    buildToolsVersion = "26.0.2"
 
     minSdkVersion = 15
     targetSdkVersion = 15
+    supportLibVersion = '26.1.0'
 
     versionCode = 1
     versionNamePrefix = "1.0"
     versionDate = getDate()
-    versionName = computeVersionName()
+    versionName = "1.0"
 }
 
 def computeVersionName() {
     def proc = 'git rev-parse --short HEAD'.execute();
     proc.waitFor();
-    def version = proc.in.text.trim();
+    def version = proc.in.text.trim()
 
     return project.versionNamePrefix + '.' + version;
 }

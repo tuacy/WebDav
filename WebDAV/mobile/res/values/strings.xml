@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Android WebDAV</string>
+    <string name="app_name">WebDAV</string>
 
     <!-- Common -->
     <string name="ip_address">Ip address</string>

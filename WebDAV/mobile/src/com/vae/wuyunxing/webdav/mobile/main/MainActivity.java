@@ -4,11 +4,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.webkit.MimeTypeMap;
 
-import com.vae.wuyunxing.webdav.library.log.MKLog;
 import com.vae.wuyunxing.webdav.library.play.util.Utils;
 import com.vae.wuyunxing.webdav.library.play.webdav.WebDAVFilePlayService;
 import com.vae.wuyunxing.webdav.library.play.webdav.WebDAVFileServer;
@@ -17,7 +15,6 @@ import com.vae.wuyunxing.webdav.mobile.R;
 import com.vae.wuyunxing.webdav.mobile.main.message.BackParentEvent;
 import com.vae.wuyunxing.webdav.mobile.main.message.EnterEditModeEvent;
 import com.vae.wuyunxing.webdav.mobile.main.message.ExitEditModeEvent;
-import com.vae.wuyunxing.webdav.mobile.main.message.FilterFileEvent;
 import com.vae.wuyunxing.webdav.mobile.main.message.PlayFileEvent;
 
 import de.greenrobot.event.EventBus;

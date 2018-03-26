@@ -347,7 +347,7 @@ public class RemoteFileListFragment extends Fragment {
 		String domain = getActivity().getResources().getString(R.string.webdav_domain);
 		String sambaUser = getActivity().getResources().getString(R.string.webdav_root);
 		String password = getResources().getString(R.string.webdav_password);
-		String path = PathUtil.appendPath(true, "/");
+		String path = PathUtil.appendPath(true, getActivity().getResources().getString(R.string.webdav_path));
 		return new JackrabbitPath(domain, path, sambaUser, password);
 	}
 
